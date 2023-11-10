@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  monitor:
+    container_name: monitor
+    build:
+      context: ./monitor
+    environment:
+      NODE_ENV: production
+    ports:
+      - 1111:1111
+
+  users:
+    container_name: users
+    build:
+      context: ./users
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8080:8080
+
+  orders:
+    container_name: orders
+    build:
+      context: ./orders
+    environment:
+      NODE_ENV: production
+    ports:
+      - 8081:8081

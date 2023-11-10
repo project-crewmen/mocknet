@@ -8,7 +8,7 @@ exports.mock = async (req, res) => {
 
         for (let index = 0; index < numberOfRequests; index++) {
             try {
-                const orderResponse = await axios.get('http://localhost:8081/order');
+                const orderResponse = await axios.get('http://orders:8081/order');
 
                 // Measure payload size
                 const payloadSize = JSON.stringify(orderResponse.data).length;

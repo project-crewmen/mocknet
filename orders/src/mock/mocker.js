@@ -8,7 +8,7 @@ exports.mock = async (req, res) => {
 
         for (let index = 0; index < numberOfRequests; index++) {
             try {
-                const orderResponse = await axios.get('http://localhost:8080/user');
+                const orderResponse = await axios.get('http://users:8080/user');
 
                 // Measure payload size
                 const payloadSize = JSON.stringify(orderResponse.data).length;
@@ -26,7 +26,7 @@ exports.mock = async (req, res) => {
 
         // Delay
         const globalDelay = getRandomInt(1000, 5000); // Random delay between 1 and 5 seconds
-        console.log(`--- wait ${globalDelay}ms until next round of mock requests ---`)
+        console.log(`------- wait ${globalDelay}ms until next round of mock requests ---`)
         await sleep(globalDelay);
     }
 };
