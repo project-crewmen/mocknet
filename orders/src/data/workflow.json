@@ -1,0 +1,39 @@
+{
+    "serviceList": [
+        {
+            "service": "users",
+            "apiList": [
+                {
+                    "api": [
+                        {
+                            "env": "docker",
+                            "api": "http://users:8080/user"
+                        },
+                        {
+                            "env": "localhost",
+                            "api": "http://localhost:8080/user"
+                        }
+                    ],
+                    "requests": {
+                        "type": "random",
+                        "min": 1,
+                        "max": 10,
+                        "requestDelay": {
+                            "type": "random",
+                            "min": 500,
+                            "max": 1000
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "serviceDelay": {
+        "type": "random",
+        "min": 1000,
+        "max": 5000
+    },
+    "configurations": {
+        "env": "localhost"
+    }
+}
