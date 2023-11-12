@@ -1,17 +1,17 @@
 version: '3'
 
 services:
-# User Interface
+  # User Interface
   mocknet-dashboard:
-    container_name: mocknet-dashboard
+    container_name: dashboard
     build:
-      context: ./mocknet-dashboard
+      context: ./mocknet_dashboard
     environment:
       NODE_ENV: production
     ports:
       - 3000:80
 
-# Monitoring Tool
+  # Monitoring Tool
   monitor:
     container_name: monitor
     build:
@@ -21,7 +21,7 @@ services:
     ports:
       - 1111:1111
 
-# Microservices
+  # Microservices
   users:
     container_name: users
     build:
@@ -29,7 +29,7 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 8080:8080
+      - 5000:5000
 
   orders:
     container_name: orders
@@ -38,13 +38,37 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - 8081:8081
+      - 5001:5001
 
-# Database
+  # Database
   mongo:
     container_name: mongo
     image: mongo
+    environment:
+        - MONGO_INITDB_ROOT_USERNAME=root
+        - MONGO_INITDB_ROOT_PASSWORD=password
+    restart: unless-stopped
     volumes:
-      - ./data:/data/db
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
     ports:
       - '27017:27017'
+
+  mongo-express:
+    image: mongo-express
+    container_name: mexpress
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_URL=mongodb://root:password@mongo:27017/?authSource=admin
+      - ME_CONFIG_BASICAUTH_USERNAME=mexpress
+      - ME_CONFIG_BASICAUTH_PASSWORD=mexpress
+    links:
+      - mongo
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+
+volumes:
+  mongodb:
+  mongodb_config:
