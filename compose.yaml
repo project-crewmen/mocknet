@@ -1,6 +1,17 @@
 version: '3'
 
 services:
+# User Interface
+  mocknet-dashboard:
+    container_name: mocknet-dashboard
+    build:
+      context: ./mocknet-dashboard
+    environment:
+      NODE_ENV: production
+    ports:
+      - 3000:80
+
+# Monitoring Tool
   monitor:
     container_name: monitor
     build:
@@ -10,6 +21,7 @@ services:
     ports:
       - 1111:1111
 
+# Microservices
   users:
     container_name: users
     build:
@@ -27,3 +39,12 @@ services:
       NODE_ENV: production
     ports:
       - 8081:8081
+
+# Database
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - '27017:27017'
