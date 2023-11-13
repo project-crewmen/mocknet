@@ -1,4 +1,8 @@
 {
+    "configurations": {
+        "serviceName": "users",
+        "env": "localhost"
+    },
     "serviceList": [
         {
             "service": "orders",
@@ -7,11 +11,11 @@
                     "api": [
                         {
                             "env": "docker",
-                            "api": "http://orders:8081/order"
+                            "api": "http://orders:5001/order"
                         },
                         {
                             "env": "localhost",
-                            "api": "http://localhost:8081/order"
+                            "api": "http://localhost:5001/order"
                         }
                     ],
                     "requests": {
@@ -32,8 +36,5 @@
         "type": "random",
         "min": 1000,
         "max": 5000
-    },
-    "configurations": {
-        "env": "localhost"
     }
 }

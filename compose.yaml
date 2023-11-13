@@ -3,40 +3,36 @@ version: '3'
 services:
   # User Interface
   mocknet-dashboard:
+    image: mocknet/mocknet-dashboard
     container_name: dashboard
     build:
-      context: ./mocknet_dashboard
-    environment:
-      NODE_ENV: production
+      context: ./mocknet-dashboard
     ports:
-      - 3000:80
+      - 8080:8080
 
   # Monitoring Tool
   monitor:
+    image: mocknet/monitor
     container_name: monitor
     build:
       context: ./monitor
-    environment:
-      NODE_ENV: production
     ports:
       - 1111:1111
 
   # Microservices
   users:
+    image: mocknet/users
     container_name: users
     build:
       context: ./users
-    environment:
-      NODE_ENV: production
     ports:
       - 5000:5000
 
   orders:
+    image: mocknet/orders
     container_name: orders
     build:
       context: ./orders
-    environment:
-      NODE_ENV: production
     ports:
       - 5001:5001
 
