@@ -10,15 +10,28 @@ const createWeightedMatrix = (data) => {
     const messagePassedMatrix = Array.from({ length: nodes.length }, () => Array(nodes.length).fill(0));
     const dataExchangedMatrix = Array.from({ length: nodes.length }, () => Array(nodes.length).fill(0));
 
+    // Initialize an empty array for edges
+    const edges = [];
+
     // Populate the matrix with weights based on messagesPassed
     data.forEach(item => {
         const senderIndex = nodes.indexOf(item.sender);
         const receiverIndex = nodes.indexOf(item.receiver);
         messagePassedMatrix[senderIndex][receiverIndex] = item.messagesPassed;
         dataExchangedMatrix[senderIndex][receiverIndex] = item.dataExchanged;
+
+        // Add edge to the edges array
+        edges.push({
+            from: senderIndex + 1, // Adding 1 to match 1-based indexing
+            to: receiverIndex + 1, // Adding 1 to match 1-based indexing
+            edge: `${item.sender} - ${item.receiver}`,
+            messagesPassed: item.messagesPassed,
+            dataExchanged: item.dataExchanged,
+            affinity: calculateCommunicationAffinity(item.messagesPassed, item.dataExchanged)
+        });
     });
 
-    return { nodes, messagePassedMatrix, dataExchangedMatrix };
+    return { nodes, edges, messagePassedMatrix, dataExchangedMatrix };
 }
 
 // Function to get edge pairs from the matrix
@@ -69,11 +82,12 @@ const monitor = async (req, res) => {
         const communications = await Network.find()
 
         // Get the nodes and weighted matrix
-        console.log(communications);
-        const { nodes, messagePassedMatrix, dataExchangedMatrix } = createWeightedMatrix(communications);
+        const { nodes, edges, messagePassedMatrix, dataExchangedMatrix } = createWeightedMatrix(communications);
 
         // Display the nodes and matrix
         console.log('Nodes:', nodes);
+        console.log('Edges:', edges);
+
         console.log('Weighted Message Passed Matrix:');
         messagePassedMatrix.forEach(row => console.log(row.join('\t')));
 
@@ -83,7 +97,6 @@ const monitor = async (req, res) => {
 
         console.log("\n");
 
-        console.log('Nodes:', nodes);
         console.log('Weighted Data Exchanged Matrix:');
         dataExchangedMatrix.forEach(row => console.log(row.join('\t')));
 
@@ -102,5 +115,5 @@ const monitor = async (req, res) => {
     }
 };
 
-module.exports = { createWeightedMatrix, getEdgePairs,getCommunicationAffinityList, calculateCommunicationAffinity, monitor }
+module.exports = { createWeightedMatrix, getEdgePairs, getCommunicationAffinityList, calculateCommunicationAffinity, monitor }
 

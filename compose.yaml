@@ -36,6 +36,14 @@ services:
     ports:
       - 5001:5001
 
+  items:
+    image: mocknet/items
+    container_name: items
+    build:
+      context: ./items
+    ports:
+      - 5002:5002
+
   # Database
   mongo:
     container_name: mongo

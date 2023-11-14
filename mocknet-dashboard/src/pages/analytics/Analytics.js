@@ -3,6 +3,8 @@ import { CategoryScale } from "chart.js";
 import { useState, useEffect } from "react";
 import { Data } from "../../data/Data";
 import BarChart from "../../components/charts/BarChart";
+import UndirectedGraph from "../../components/graphs/UndirectedGraph";
+import CommunicationTable from "../../components/data-tables/CommunicationTable";
 
 import { Card } from "antd";
 import DefaultLayout from "../../layouts/DefaultLayout";
@@ -12,6 +14,27 @@ import { getStats } from "../../api/api";
 Chart.register(CategoryScale);
 
 function Analytics() {
+  const [nodes, setNodes] = useState([
+    {
+      id: 1,
+      label: "users"
+    },
+    {
+      id: 2,
+      label: "orders"
+    },
+    {
+      id: 3,
+      label: "items"
+    }
+  ])
+  const [edges, setEdges] = useState([
+    { from: 1, to: 2, label: "0" },
+    { from: 2, to: 1, label: "0" },
+    { from: 3, to: 2, label: "0" },
+    { from: 3, to: 1, label: "0" }
+  ])
+
   const [messagesPassedChartData, setMessagesPassedChartData] = useState({
     labels: Data.map((data) => data.connection),
 
@@ -55,6 +78,14 @@ function Analytics() {
     const fetchData = async () => {
       try {
         const { data } = await getStats();
+
+        setNodes([...data.nodes])
+
+        setEdges(data.edges.map(item => {
+          return {
+            from: item.from, to: item.to, label: `${item.affinity}`
+          }
+        }))
 
         setMessagesPassedChartData({
           ...messagesPassedChartData,
@@ -117,18 +148,28 @@ function Analytics() {
 
   return (
     <DefaultLayout>
-      <div className="flex flex-col md:flex-row gap-5">
-        <Card title="Amount of messages passed" className="w-[550px]">
+      <div className="grid grid-cols-3 gap-5 pb-3">
+        <Card title="Amount of messages passed">
           <BarChart chartData={messagesPassedChartData} />
         </Card>
 
-        <Card title="Amount of data exchanged" className="w-[550px]">
+        <Card title="Amount of data exchanged">
           <BarChart chartData={dataExchangedChartData} />
         </Card>
 
-        <Card title="Communication Affinities" className="w-[550px]">
+        <Card title="Communication Affinities">
           <BarChart chartData={comAffinitiesChartData} />
         </Card>
+      </div>
+
+      <div className="grid grid-cols-3 gap-5 pb-3">
+        <Card title="Microservice Distribution">
+          <UndirectedGraph nodes={nodes} edges={edges} />
+        </Card>
+
+        {/* <div className="">
+          <CommunicationTable data={edges} />
+        </div> */}
       </div>
 
     </DefaultLayout>
