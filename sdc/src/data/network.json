@@ -1,0 +1,25 @@
+{
+    "network": [
+        {
+            "machines": {
+                "source": "machine-01",
+                "destination": "machine-02"
+            },
+            "link": "link-01"
+        },
+        {
+            "machines": {
+                "source": "machine-01",
+                "destination": "machine-03"
+            },
+            "link": "link-02"
+        },
+        {
+            "machines": {
+                "source": "machine-02",
+                "destination": "machine-03"
+            },
+            "link": "link-03"
+        }
+    ]
+}
