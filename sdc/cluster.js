@@ -4,7 +4,7 @@ const runner = require("./src/run/runner");
 // RUNNING SERVER
 const PORT = 2222;
 const cluster = app.listen(PORT, () => {
-    console.log(`✔️  App running on port ${PORT}`);
+    console.log(`\n✔️  App running on port ${PORT}`);
 });
 
 runner.run()

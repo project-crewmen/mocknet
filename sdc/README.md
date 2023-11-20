@@ -1,4 +1,4 @@
-# Software-Defined Cluster(SDC
+# Software-Defined Cluster(SDC)
 
 ## Machines Specifications
 - **name**: The name or identifier of the machine.

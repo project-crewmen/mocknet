@@ -25,6 +25,38 @@
                     "ip_address": "192.168.1.10",
                     "mac_address": "00:1a:2b:3c:4d:5a"
                 }
+            ],
+            "container_deployments": [
+                {
+                    "container_name": "web-app",
+                    "image": "nginx:latest",
+                    "port_mappings": [
+                        {
+                            "host_port": 8080,
+                            "container_port": 80
+                        }
+                    ],
+                    "resource_requirements": {
+                        "cpu": 50,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    }
+                },
+                {
+                    "container_name": "web-app2",
+                    "image": "nginx:latest",
+                    "port_mappings": [
+                        {
+                            "host_port": 8080,
+                            "container_port": 80
+                        }
+                    ],
+                    "resource_requirements": {
+                        "cpu": 50,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    }
+                }
             ]
         },
         {
@@ -52,6 +84,23 @@
                     "ip_address": "192.168.1.11",
                     "mac_address": "00:1a:2b:3c:4d:5b"
                 }
+            ],
+            "container_deployments": [
+                {
+                    "container_name": "web-app",
+                    "image": "nginx:latest",
+                    "port_mappings": [
+                        {
+                            "host_port": 8080,
+                            "container_port": 80
+                        }
+                    ],
+                    "resource_requirements": {
+                        "cpu": 50,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    }
+                }
             ]
         },
         {
@@ -78,6 +127,23 @@
                     "name": "eth0",
                     "ip_address": "192.168.1.12",
                     "mac_address": "00:1a:2b:3c:4d:5c"
+                }
+            ],
+            "container_deployments": [
+                {
+                    "container_name": "web-app",
+                    "image": "nginx:latest",
+                    "port_mappings": [
+                        {
+                            "host_port": 8080,
+                            "container_port": 80
+                        }
+                    ],
+                    "resource_requirements": {
+                        "cpu": 50,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    }
                 }
             ]
         }
