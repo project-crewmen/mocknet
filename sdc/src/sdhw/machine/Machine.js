@@ -12,18 +12,31 @@ class Machine {
     this.containerDeployments = containerDeployments
   }
 
-  displayInfo() {
-    console.log(`Machine Name: ${this.name}`);
-    console.log(`Operating System: ${this.operatingSystem}`);
-    console.log(`Architecture: ${this.architecture}`);
-    console.log(`CPU: ${this.cpu.model}, Cores: ${this.cpu.cores}, Threads: ${this.cpu.threads}, Clock Speed: ${this.cpu.clockSpeed}`);
-    console.log(`Memory: ${this.memory.total}, Type: ${this.memory.type}, Speed: ${this.memory.speed}`);
-    console.log(`Storage: Type: ${this.storage.type}, Capacity: ${this.storage.capacity}`);
-    console.log(`Network Interfaces:`);
-    this.networkInterfaces.forEach((nic) => {
-      console.log(`  Name: ${nic.name}, IP Address: ${nic.ipAddress}, MAC Address: ${nic.macAddress}`);
-    });
-    console.log(`State: ${this.state}`);
+  getMachineData() {
+    return {
+      name: this.name,
+      operatingSystem: this.operatingSystem,
+      operatingSystem: this.operatingSystem,
+      cpu: this.cpu,
+      memory: this.memory,
+      storage: this.storage,
+      networkInterfaces: this.networkInterfaces,
+      state: this.state,
+    }
+  }
+
+  getContainer(name) {
+    let container = this.containerDeployments.find(c => c.name === name)
+
+    if (container) {
+        return container.getContainerData()
+    } else {
+        return null
+    }
+  }
+
+  getContainerList() {
+    return this.containerDeployments
   }
 }
 

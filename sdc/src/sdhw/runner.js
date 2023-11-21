@@ -3,19 +3,22 @@ const machines = require("../data/machines.json")
 const links = require("../data/links.json")
 const network = require("../data/network.json")
 
-const CPU = require("../sdhw/machine/_com/CPU")
-const Memory = require("../sdhw/machine/_com/Memory")
-const Storage = require("../sdhw/machine/_com/Storage")
-const NetworkInterface = require("../sdhw/machine/_com/NetworkInterface")
-const ContainerDeployment = require("../sdhw/machine/_com/ContainerDeployment")
-const Machine = require("../sdhw/machine/Machine")
+const CPU = require("./machine/_com/CPU")
+const Memory = require("./machine/_com/Memory")
+const Storage = require("./machine/_com/Storage")
+const NetworkInterface = require("./machine/_com/NetworkInterface")
+const ContainerDeployment = require("./machine/_com/ContainerDeployment")
+const Machine = require("./machine/Machine")
 
-const Link = require("../sdhw/link/Link")
+const Link = require("./link/Link")
 
-exports.run = () => {
+var loaded_machines = []
+var loaded_links = []
+var adjacencyMatrix = []
+
+const run = () => {
     /* 1. Spin the machines */
     console.log("\n--- Spin up Machines ---");
-    var loaded_machines = []
 
     for (const net of network.network) {
         // Extract source and destination machines
@@ -46,7 +49,6 @@ exports.run = () => {
 
     /* 2. Establish links */
     console.log("\n--- Establish Links ---");
-    var loaded_links = []
 
     for (const link of links.links) {
         const new_link = initializeLink(link)
@@ -54,7 +56,7 @@ exports.run = () => {
         if (new_link != null) { loaded_links.push(new_link); }
     }
 
-    
+
     const connections = initializeConnections(network, loaded_machines)
 
     // Print the containers alongside respective machine
@@ -118,7 +120,7 @@ function initializeLink(linkData) {
 function initializeConnections(network, loaded_machines) {
     // Create an empty adjacency matrix with all values initialized to 0
     const numMachines = loaded_machines.length;
-    const adjacencyMatrix = Array.from({ length: numMachines }, () => Array(numMachines).fill(0));
+    adjacencyMatrix = Array.from({ length: numMachines }, () => Array(numMachines).fill(0));
 
     // Function to get the index of a machine in loaded_machines array
     const getMachineIndex = (machineName) => loaded_machines.findIndex(machine => machine.name === machineName);
@@ -144,4 +146,76 @@ function initializeConnections(network, loaded_machines) {
     }
 
     return adjacencyMatrix
+}
+
+// Machine
+function getMachineData(name) {
+    let machine = loaded_machines.find(m => m.name === name)
+
+    if (machine) {
+        return machine.getMachineData()
+    } else {
+        return null
+    }
+}
+
+// Link
+function getMainLinkPropertiesForMachines(src, dest) {
+    // Function to get the index of a machine in loaded_machines array
+    const getMachineIndex = (machineName) => loaded_machines.findIndex(machine => machine.name === machineName);
+
+    let associated_link = loaded_links.find(link => link.name === adjacencyMatrix[getMachineIndex(src)][getMachineIndex(dest)]);
+
+    if (associated_link) {
+        return associated_link.getMainLinkProperties()
+    } else {
+        return null
+    }
+}
+
+// Container
+function getContainerData(machineName, containerName) {
+    let machine = loaded_machines.find(m => m.name === machineName)
+
+    if (machine) {
+        let container = machine.getContainer(containerName)
+
+        if (container) {
+            return container
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
+function getContainerList(machineName) {
+    let machine = loaded_machines.find(m => m.name === machineName)
+
+    if (machine) {
+        let containers = machine.getContainerList()
+
+        if (containers) {
+            return containers
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
+module.exports = {
+    run,
+
+    // Machine
+    getMachineData,
+
+    // Link
+    getMainLinkPropertiesForMachines,
+
+    // Container
+    getContainerData,
+    getContainerList
 }

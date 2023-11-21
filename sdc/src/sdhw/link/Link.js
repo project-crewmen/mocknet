@@ -21,6 +21,14 @@ class Link {
         this.configuration_management = data.configuration_management;
         this.automation = data.automation;
     }
+
+    getMainLinkProperties() {
+        return {
+            bandwidth: this.bandwidth,
+            latency: this.latency,
+            jitter: this.jitter
+        }
+    }
 }
 
 module.exports = Link

@@ -1,5 +1,5 @@
 const app = require("./src/app");
-const runner = require("./src/run/runner");
+const { run } = require("./src/sdhw/runner");
 
 // RUNNING SERVER
 const PORT = 2222;
@@ -7,7 +7,7 @@ const cluster = app.listen(PORT, () => {
     console.log(`\n✔️  App running on port ${PORT}`);
 });
 
-runner.run()
+run()
 
 // CAUGHT UNHANDLED REJECTION
 process.on("unhandledRejection", (err) => {
