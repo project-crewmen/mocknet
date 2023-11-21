@@ -1,0 +1,67 @@
+{
+    "configurations": {
+        "serviceName": "email",
+        "env": "localhost"
+    },
+    "serviceList": [
+        {
+            "service": "orders",
+            "apiList": [
+                {
+                    "api": [
+                        {
+                            "env": "docker",
+                            "api": "http://orders:5001/order"
+                        },
+                        {
+                            "env": "localhost",
+                            "api": "http://localhost:5001/order"
+                        }
+                    ],
+                    "requests": {
+                        "type": "random",
+                        "min": 1,
+                        "max": 10,
+                        "requestDelay": {
+                            "type": "random",
+                            "min": 500,
+                            "max": 1000
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "service": "users",
+            "apiList": [
+                {
+                    "api": [
+                        {
+                            "env": "docker",
+                            "api": "http://users:5000/user"
+                        },
+                        {
+                            "env": "localhost",
+                            "api": "http://localhost:5000/user"
+                        }
+                    ],
+                    "requests": {
+                        "type": "random",
+                        "min": 1,
+                        "max": 10,
+                        "requestDelay": {
+                            "type": "random",
+                            "min": 500,
+                            "max": 1000
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "serviceDelay": {
+        "type": "random",
+        "min": 1000,
+        "max": 5000
+    }
+}
