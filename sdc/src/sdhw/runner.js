@@ -65,7 +65,7 @@ const run = () => {
 
     for (let i = 0; i < loaded_machines.length; i++) {
         const machine = loaded_machines[i];
-        const containerNames = machine.containerDeployments.map(deployment => deployment.containerName).join(", ");
+        const containerNames = machine.containerDeployments.map(deployment => deployment.name).join(", ");
         console.log(`${machine.name}\t${containerNames}`);
     }
 }
@@ -206,6 +206,56 @@ function getContainerList(machineName) {
     }
 }
 
+
+
+function startContainer(machineName, containerData) {
+    let machine = loaded_machines.find(m => m.name === machineName)
+
+    if (machine) {
+        let new_container = machine.startContainer(containerData)
+
+        if (new_container) {
+            return new_container
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
+function stopContainer(machineName, containerName) {
+    let machine = loaded_machines.find(m => m.name === machineName)
+
+    if (machine) {
+        let updated_container = machine.stopContainer(containerName)
+
+        if (updated_container) {
+            return updated_container
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
+function removeContainer(machineName, containerName) {
+    let machine = loaded_machines.find(m => m.name === machineName)
+
+    if (machine) {
+        let is_removed = machine.removeContainer(containerName)
+
+        if (is_removed) {
+            return true
+        } else {
+            return null
+        }
+    } else {
+        return null
+    }
+}
+
 module.exports = {
     run,
 
@@ -217,5 +267,8 @@ module.exports = {
 
     // Container
     getContainerData,
-    getContainerList
+    getContainerList,
+    startContainer,
+    stopContainer,
+    removeContainer
 }

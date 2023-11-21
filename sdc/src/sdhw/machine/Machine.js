@@ -29,14 +29,42 @@ class Machine {
     let container = this.containerDeployments.find(c => c.name === name)
 
     if (container) {
-        return container.getContainerData()
+      return container.getContainerData()
     } else {
-        return null
+      return null
     }
   }
 
   getContainerList() {
     return this.containerDeployments
+  }
+
+  startContainer(containerData) {
+    const new_container = { ...containerData, state: "Running" }
+    this.containerDeployments.push(new_container)
+
+    return new_container
+  }
+
+  stopContainer(name) {
+    const containerToUpdate = this.containerDeployments.find(container => container.name === name);
+
+    if (containerToUpdate) {
+      // Update the properties of the found item
+      containerToUpdate.state = "Stopped";
+
+      return containerToUpdate
+    } else {
+      return null
+    }
+  }
+
+  removeContainer(name) {
+    const initialLength = this.containerDeployments.length;
+    this.containerDeployments = this.containerDeployments.filter(c => c.name !== name);
+    const isSuccess = this.containerDeployments.length < initialLength;
+    
+    return isSuccess;
   }
 }
 
