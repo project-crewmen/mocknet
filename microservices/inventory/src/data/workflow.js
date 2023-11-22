@@ -2,12 +2,12 @@ const apis = require("../config/apis")
 
 const workflow = {
     configurations: {
-        serviceName: "orders",
+        serviceName: "inventory",
         env: "localhost"
     },
     serviceList: [
         {
-            apiInfo: apis.items,
+            apiInfo: apis.email,
             requests: {
                 type: "random",
                 min: 1,

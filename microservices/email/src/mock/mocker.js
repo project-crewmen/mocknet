@@ -1,20 +1,42 @@
 const axios = require("axios");
 
 const { getRandomInt, sleep } = require("../utils/utils");
-const Network = require("../models/networkModel")
 
-const workflow = require("../data/workflow.json")
+const Network = require("../models/networkModel")
+const Communication = require("../models/comModel")
+
+const workflow = require("../data/workflow")
+
+const apis = require("../config/apis");
 
 exports.mock = async (req, res) => {
+    console.log(`Request Mode - ${process.env.REQUEST_MODE}`);
+
+    switch (process.env.REQUEST_MODE) {
+        case "workflow":
+            followWorkflow()
+            break;
+
+        case "reproduce":
+            reproduce()
+            break;
+
+        default:
+            followWorkflow()
+            break;
+    }
+};
+
+const followWorkflow = async () => {
     let totalMessagePassed = 0
     let totalDataEchanged = 0
 
     while (true) {
-        for (const service of workflow.serviceList) {
-            console.log(`service: ${service.service}`);
+        let serviceRequests = []
 
+        for (const service of workflow.serviceList) {
             var network = null
-            const prevNetwork = await Network.findOne({ sender: workflow.configurations.serviceName, receiver: service.service })
+            const prevNetwork = await Network.findOne({ sender: workflow.configurations.serviceName, receiver: service.apiInfo.service })
 
             if (prevNetwork !== null) {
                 network = prevNetwork
@@ -22,60 +44,66 @@ exports.mock = async (req, res) => {
             else {
                 network = await Network.create({
                     sender: workflow.configurations.serviceName,
-                    receiver: service.service,
+                    receiver: service.apiInfo.service,
                     messagesPassed: 0,
                     dataExchanged: 0,
                 })
             }
 
-            for (const api of service.apiList) {
-                // find API by ENV
-                var API = ""
-                for (const apiItem of api.api) {
-                    if (apiItem.env === workflow.configurations.env) {
-                        API = apiItem.api
-                    }
+            // find API by ENV
+            var API = ""
+            for (const apiItem of service.apiInfo.apiList) {
+                if (apiItem.env === workflow.configurations.env) {
+                    API = apiItem.api
                 }
+            }
 
-                if (API == "") {
-                    console.log("No valid API found for the Environment");
-                    return
-                }
+            if (API == "") {
+                console.log("No valid API found for the Environment");
+                return
+            }
 
-                console.log(`API: ${API}`);
+            const numberOfRequests = getRandomInt(service.requests.min, service.requests.max); // Send a random number of requests between 1 and 10
 
-                const numberOfRequests = getRandomInt(api.requests.min, api.requests.max); // Send a random number of requests between 1 and 10
+            console.log(`| Service: ${service.apiInfo.service} | API: ${API} | # of Requests: ${numberOfRequests} |`);
 
-                for (let index = 0; index < numberOfRequests; index++) {
-                    try {
-                        // Call the API
-                        const serviceResponse = await axios.get(API);
+            for (let index = 0; index < numberOfRequests; index++) {
+                try {
+                    // Call the API
+                    const serviceResponse = await axios.get(API);
 
-                        // Measure payload size
-                        const payloadSize = JSON.stringify(serviceResponse.data).length;
+                    // Measure payload size
+                    const payloadSize = JSON.stringify(serviceResponse.data).length;
 
-                        console.log(`Response received with payload size ${payloadSize} bytes`);
+                    console.log(`Response received with payload size ${payloadSize} bytes`);
 
-                        totalMessagePassed = totalMessagePassed + 1
-                        totalDataEchanged = totalDataEchanged + payloadSize
+                    totalMessagePassed = totalMessagePassed + 1
+                    totalDataEchanged = totalDataEchanged + payloadSize
 
-                        console.log(`totalMessagePassed: ${totalMessagePassed}, totalDataEchanged: ${totalDataEchanged}`);
+                    console.log(`totalMessagePassed: ${totalMessagePassed}, totalDataEchanged: ${totalDataEchanged}`);
 
-                        // Update Database Record
-                        const updatedNetwork = await Network.findOneAndUpdate({
-                            sender: workflow.configurations.serviceName,
-                            receiver: service.service,
-                        }, {
-                            messagesPassed: totalMessagePassed,
-                            dataExchanged: totalDataEchanged
-                        })
-                    } catch (error) {
-                        console.error(`Error sending request: ${error.message}`);
-                    }
+                    // Update Database Record
+                    const updatedNetwork = await Network.findOneAndUpdate({
+                        sender: workflow.configurations.serviceName,
+                        receiver: service.apiInfo.service,
+                    }, {
+                        messagesPassed: totalMessagePassed,
+                        dataExchanged: totalDataEchanged
+                    })
 
                     // Delay
-                    const localDelay = getRandomInt(api.requests.requestDelay.min, api.requests.requestDelay.max); // Random delay between 0.5 and 1 seconds
+                    const localDelay = getRandomInt(service.requests.requestDelay.min, service.requests.requestDelay.max); // Random delay between 0.5 and 1 seconds
                     await sleep(localDelay);
+
+                    // Populate ServiceRequests to push in to DB
+                    if (serviceResponse.status === 200) {
+                        serviceRequests.push({ dest: service.apiInfo.service, requestDelay: localDelay })
+                    }
+                } catch (error) {
+                    console.error(`Error sending request: ${error.message}`);
+
+                    // Retry delay
+                    await sleep(1000);
                 }
             }
         }
@@ -84,6 +112,54 @@ exports.mock = async (req, res) => {
         const globalDelay = getRandomInt(workflow.serviceDelay.min, workflow.serviceDelay.max); // Random delay between 1 and 5 seconds
         console.log(`------- wait ${globalDelay}ms until next round of mock requests ---`)
         await sleep(globalDelay);
-    }
-};
 
+        // Add DB Record
+        if (serviceRequests.length > 0) {
+            const network = await Communication.create({
+                serviceRequests: serviceRequests,
+                serviceDelay: globalDelay
+            })
+
+            if (network) {
+                console.log("✅ Communication DB Record updated successfully");
+            } else {
+                console.log("❌ Communication DB Record updating failed");
+            }
+        }
+    }
+}
+
+const reproduce = async () => {
+    const com_pattern = await Communication.find({})
+
+    for (const com of com_pattern) {
+        for (const serviceRequest of com.serviceRequests) {
+            const service = apis.apis.find(s => s.service === serviceRequest.dest)
+            const API = service.apiList.find(a => a.env === process.env.ENV).api
+
+            try {
+                // Call the API
+                const serviceResponse = await axios.get(API);
+
+                // Measure payload size
+                const payloadSize = JSON.stringify(serviceResponse.data).length;
+
+                console.log(`Response received with payload size ${payloadSize} bytes`);
+
+                // Delay
+                const localDelay = serviceRequest.requestDelay;
+                await sleep(localDelay);
+            } catch (error) {
+                console.error(`Error sending request: ${error.message}`);
+
+                // Retry delay
+                await sleep(1000);
+            }
+        }
+
+        // Delay
+        const globalDelay = com.serviceDelay
+        console.log(`------- wait ${globalDelay}ms until next round of mock requests ---`)
+        await sleep(globalDelay);
+    }
+}

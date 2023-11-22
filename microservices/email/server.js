@@ -12,7 +12,7 @@ mongoose.connection.on('connected', () => {
   console.log("✔️ Database is connected successfully");
 
   // RUNNING SERVER
-  const PORT = 5005;
+  const PORT = 5004;
   const server = app.listen(PORT, () => {
     console.log(`✔️  App running on port ${PORT}`);
   });

@@ -40,30 +40,16 @@ exports.items = {
     ]
 }
 
-exports.payment = {
-    service: "payment",
-    apiList: [
-        {
-            env: "docker",
-            api: "http://payment:5003/payment"
-        },
-        {
-            env: "localhost",
-            api: "http://localhost:5003/payment"
-        }
-    ]
-}
-
 exports.inventory = {
     service: "inventory",
     apiList: [
         {
             env: "docker",
-            api: "http://inventory:5004/inventory"
+            api: "http://inventory:5003/inventory"
         },
         {
             env: "localhost",
-            api: "http://localhost:5004/inventory"
+            api: "http://localhost:5003/inventory"
         }
     ]
 }
@@ -73,20 +59,34 @@ exports.email = {
     apiList: [
         {
             env: "docker",
-            api: "http://email:5005/email"
+            api: "http://email:5004/email"
         },
         {
             env: "localhost",
-            api: "http://localhost:5005/email"
+            api: "http://localhost:5004/email"
+        }
+    ]
+}
+
+exports.payment = {
+    service: "payment",
+    apiList: [
+        {
+            env: "docker",
+            api: "http://payment:5005/payment"
+        },
+        {
+            env: "localhost",
+            api: "http://localhost:5005/payment"
         }
     ]
 }
 
 exports.apis = [
-    this.orders,
     this.users,
+    this.orders,
     this.items,
-    this.payment,
     this.inventory,
-    this.email
+    this.email,
+    this.payment
 ];

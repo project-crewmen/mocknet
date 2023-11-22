@@ -64,7 +64,7 @@ COPY --from=build /usr/src/app/dist ./dist
 
 
 # Expose the port that the application listens on.
-EXPOSE 5005
+EXPOSE 5004
 
 # Run the application.
 CMD node /usr/src/app/dist/final.js

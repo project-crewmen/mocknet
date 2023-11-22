@@ -3,7 +3,7 @@ const axios = require("axios");
 const { getRandomInt, sleep } = require("../utils/utils");
 
 const Network = require("../models/networkModel")
-const UsersCommunication = require("../models/usersComModel")
+const Communication = require("../models/comModel")
 
 const workflow = require("../data/workflow")
 
@@ -115,7 +115,7 @@ const followWorkflow = async () => {
 
         // Add DB Record
         if (serviceRequests.length > 0) {
-            const network = await UsersCommunication.create({
+            const network = await Communication.create({
                 serviceRequests: serviceRequests,
                 serviceDelay: globalDelay
             })
@@ -130,7 +130,7 @@ const followWorkflow = async () => {
 }
 
 const reproduce = async () => {
-    const com_pattern = await UsersCommunication.find({})
+    const com_pattern = await Communication.find({})
 
     for (const com of com_pattern) {
         for (const serviceRequest of com.serviceRequests) {
