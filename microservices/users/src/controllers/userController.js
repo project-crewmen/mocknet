@@ -4,5 +4,5 @@ const users = [
 ];
 
 exports.getUsers = async (req, res) => {
-    res.json(users);
+    res.status(200).json(users);
 }

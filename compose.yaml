@@ -36,37 +36,37 @@ services:
     ports:
       - 5001:5001
 
-  items:
-    image: mocknet/items
-    container_name: items
-    build:
-      context: ./microservices/items
-    ports:
-      - 5002:5002
+  # items:
+  #   image: mocknet/items
+  #   container_name: items
+  #   build:
+  #     context: ./microservices/items
+  #   ports:
+  #     - 5002:5002
 
-  payment:
-    image: mocknet/payment
-    container_name: payment
-    build:
-      context: ./microservices/payment
-    ports:
-      - 5003:5003
+  # payment:
+  #   image: mocknet/payment
+  #   container_name: payment
+  #   build:
+  #     context: ./microservices/payment
+  #   ports:
+  #     - 5003:5003
 
-  inventory:
-    image: mocknet/inventory
-    container_name: inventory
-    build:
-      context: ./microservices/inventory
-    ports:
-      - 5004:5004
+  # inventory:
+  #   image: mocknet/inventory
+  #   container_name: inventory
+  #   build:
+  #     context: ./microservices/inventory
+  #   ports:
+  #     - 5004:5004
 
-  email:
-    image: mocknet/email
-    container_name: email
-    build:
-      context: ./microservices/email
-    ports:
-      - 5005:5005
+  # email:
+  #   image: mocknet/email
+  #   container_name: email
+  #   build:
+  #     context: ./microservices/email
+  #   ports:
+  #     - 5005:5005
 
   # Database
   mongo:

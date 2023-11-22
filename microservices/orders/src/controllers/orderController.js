@@ -4,5 +4,5 @@ const orders = [
   ];
 
 exports.getOrders = async (req, res) => {
-    res.json(orders);
+    res.status(200).json(orders);
 }
