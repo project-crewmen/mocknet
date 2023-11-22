@@ -7,8 +7,12 @@ const app = require("./src/app");
 const mocker = require("./src/mock/mocker");
 
 // DATABASE
-const DATABASE_URI = "mongodb://root:password@localhost:27017";
-mongoose.connect(DATABASE_URI);
+const DATABASE_URI_LOCALHOST = "mongodb://root:password@localhost:27017";
+const DATABASE_URI_DOCKER = "mongodb://root:password@mongo:27017";
+
+const dbURI = process.env.ENV === "localhost" ? DATABASE_URI_LOCALHOST : DATABASE_URI_DOCKER
+
+mongoose.connect(dbURI);
 
 // Listen for the connection event
 mongoose.connection.on('connected', () => {

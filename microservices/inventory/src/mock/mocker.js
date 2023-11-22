@@ -50,13 +50,8 @@ const followWorkflow = async () => {
                 })
             }
 
-            // find API by ENV
-            var API = ""
-            for (const apiItem of service.apiInfo.apiList) {
-                if (apiItem.env === workflow.configurations.env) {
-                    API = apiItem.api
-                }
-            }
+            // Get the API
+            const API = service.apiInfo.apiList.find(a => a.env === process.env.ENV).api
 
             if (API == "") {
                 console.log("No valid API found for the Environment");

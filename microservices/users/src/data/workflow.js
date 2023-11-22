@@ -2,8 +2,7 @@ const apis = require("../config/apis")
 
 const workflow = {
     configurations: {
-        serviceName: "users",
-        env: "localhost"
+        serviceName: "users"
     },
     serviceList: [
         {
