@@ -1,6 +1,7 @@
 // SDHW
 const Machine = require("./Machine")
 const Link = require("./Link")
+const Network = require("./Network")
 
 // Data
 const network_data = require("../data/network")
@@ -63,12 +64,34 @@ const run = async () => {
             if (new_link != null) { loaded_links.push(new_link); }
         }
     }
+
+    /* 3. Instancing Network */
+    console.log("\n--- Establish Links ---");
+
+    await Network.clearNetwork()
+    for (const net of network_data.network) {
+        // Extract the used machines, link
+        let sourceMachine = net.machines.source.name;
+        let destinationMachine = net.machines.destination.name;
+        let usedLink = net.link.name;
+
+        // Get from DB
+        const src = await Machine.getMachine(sourceMachine)
+        const dest = await Machine.getMachine(destinationMachine)
+        const link = await Link.getLink(usedLink)
+
+        // Construct network instance
+        const network_inst = {
+            machines: {
+                source: src,
+                destination: dest
+            },
+            link: link
+        }
+
+        // Save
+        await Network.initializeNetwork(network_inst)
+    }
 }
-
-
-
-
-
-
 
 module.exports = { run }

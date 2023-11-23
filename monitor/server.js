@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const app = require("./src/app");
-const {monitor} = require("./src/monitor/monitor");
+const { monitor } = require("./src/monitor/monitor");
 
 // DATABASE
 const DATABASE_URI = "mongodb://root:password@localhost:27017";
