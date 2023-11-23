@@ -1,8 +1,8 @@
-const { getMachineData } = require("../sdhw/runner")
+const Machine = require("../sdhw-persisted/Machine")
 
 // Machine
 exports.getMachine = async (req, res) => {
-    const data = getMachineData(req.params['machineName'])
+    const data = await Machine.getMachine(req.params['machineName'])
 
-    res.status(200).json({ machineData: data });
+    res.status(200).json({ machine: data });
 }

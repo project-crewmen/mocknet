@@ -5,6 +5,6 @@ const linkController = require("../controllers/linkController");
 const router = express.Router();
 
 // Link
-router.get("/:src/:dest", linkController.getLink);
+router.get("/:linkName", linkController.getLink);
 
 module.exports = router;

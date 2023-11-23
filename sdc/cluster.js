@@ -1,19 +1,56 @@
-const app = require("./src/app");
-const { run } = require("./src/sdhw/runner");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
 
-// RUNNING SERVER
-const PORT = 2222;
-const cluster = app.listen(PORT, () => {
-    console.log(`\n✔️  App running on port ${PORT}`);
+dotenv.config({ path: "./.env" });
+
+const app = require("./src/app");
+const { run } = require("./src/sdhw-persisted/initialRunner");
+
+// DATABASE
+const DATABASE_URI_LOCALHOST = "mongodb://root:password@localhost:27017";
+const DATABASE_URI_DOCKER = "mongodb://root:password@mongo:27017";
+
+const dbURI = process.env.ENV === "localhost" ? DATABASE_URI_LOCALHOST : DATABASE_URI_DOCKER
+
+mongoose.connect(dbURI);
+
+// Listen for the connection event
+mongoose.connection.on('connected', () => {
+    console.log("✔️ Database is connected successfully");
+
+    // RUNNING SERVER
+    const PORT = 2222;
+    const server = app.listen(PORT, () => {
+        console.log(`✔️  App running on port ${PORT}`);
+    });
+
+    // Mock routines
+    run()
+
+    // CAUGHT UNHANDLED REJECTION
+    process.on("unhandledRejection", (err) => {
+        console.log("UNHANDLED REJECTION 💣: Server Shutting down");
+        console.log(err.name, err.message);
+        server.close(() => {
+            process.exit(1);
+        });
+    });
 });
 
-run()
+// Listen for the error event
+mongoose.connection.on('error', (err) => {
+    console.error(`Mongoose connection error: ${err}`);
+});
 
-// CAUGHT UNHANDLED REJECTION
-process.on("unhandledRejection", (err) => {
-    console.log("UNHANDLED REJECTION 💣: Cluster Shutting down");
-    console.log(err.name, err.message);
-    cluster.close(() => {
-        process.exit(1);
+// Listen for the disconnection event
+mongoose.connection.on('disconnected', () => {
+    console.log('Mongoose disconnected');
+});
+
+// Close Mongoose connection when the app is terminated
+process.on('SIGINT', () => {
+    mongoose.connection.close(() => {
+        console.log('Mongoose connection closed due to app termination');
+        process.exit(0);
     });
 });

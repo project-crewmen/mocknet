@@ -8,7 +8,7 @@ const router = express.Router({mergeParams: true});
 router.get("/:containerName", containerController.getContainer);
 router.get("/", containerController.getContainerList);
 router.post("/start", containerController.startContainer);
-router.patch("/:containerName/stop", containerController.stopContainer);
-router.delete("/:containerName", containerController.removeContainer);
+// router.patch("/:containerName/stop", containerController.stopContainer);
+// router.delete("/:containerName", containerController.removeContainer);
 
 module.exports = router;

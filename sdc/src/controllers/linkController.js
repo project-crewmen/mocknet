@@ -1,8 +1,8 @@
-const { getMainLinkPropertiesForMachines } = require("../sdhw/runner")
+const Link = require("../sdhw-persisted/Link")
 
 // Link
 exports.getLink = async (req, res) => {
-    const data = getMainLinkPropertiesForMachines(req.params['src'], req.params['dest'])
+    const data = await Link.getLink(req.params["linkName"])
 
-    res.status(200).json({ linkProperties: data });
+    res.status(200).json({ link: data });
 }
