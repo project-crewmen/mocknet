@@ -5,6 +5,7 @@ dotenv.config({ path: "./.env" });
 
 const app = require("./src/app");
 const mocker = require("./src/mock/mocker");
+const sdcDeployer = require("./src/mock/sdcDeployer");
 
 // DATABASE
 const connectMongoDB = async () => {
@@ -23,7 +24,7 @@ const connectMongoDB = async () => {
 connectMongoDB()
 
 // Listen for the connection event
-mongoose.connection.on('connected', () => {
+mongoose.connection.on('connected', async () => {
   console.log("✔️ Database is connected successfully");
 
   // RUNNING SERVER
@@ -32,8 +33,12 @@ mongoose.connection.on('connected', () => {
     console.log(`✔️  App running on port ${PORT}`);
   });
 
+  const res = await sdcDeployer.sdcDeploy()
+
   // Mock routines
-  mocker.mock()
+  if (res !== null) {
+    mocker.mock()
+  }
 
   // CAUGHT UNHANDLED REJECTION
   process.on("unhandledRejection", (err) => {

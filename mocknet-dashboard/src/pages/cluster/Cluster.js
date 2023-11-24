@@ -67,8 +67,10 @@ function Cluster() {
             cpuUsage: 304,
             memoryUsage: 25840,
             diskUsage: 13072,
-            containerDeployments: m.container_deployments
+            containerDeployments: m.container_deployments.length > 0 ? m.container_deployments.map(item => item.name): []
           }));
+
+          console.log(mList);
 
           setMachines(mList)
         } catch (error) {

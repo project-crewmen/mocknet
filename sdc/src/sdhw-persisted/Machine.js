@@ -30,7 +30,7 @@ exports.initializeMachine = async (machine) => {
 
 exports.getMachine = async (machineName) => {
     try {
-        const machine = await MachineModel.findOne({name: machineName})
+        const machine = await MachineModel.findOne({name: machineName}).populate("container_deployments", "")
 
         return machine
     } catch (error) {
@@ -41,7 +41,7 @@ exports.getMachine = async (machineName) => {
 
 exports.getMachineList = async () => {
     try {
-        const machineList = await MachineModel.find({})
+        const machineList = await MachineModel.find({}).populate("container_deployments", "")
 
         return machineList
     } catch (error) {
