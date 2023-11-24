@@ -1,179 +1,209 @@
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 import { useState, useEffect } from "react";
-import { Data } from "../../data/Data";
+
 import BarChart from "../../components/charts/BarChart";
 import UndirectedGraph from "../../components/graphs/UndirectedGraph";
-import CommunicationTable from "../../components/data-tables/CommunicationTable";
 
 import { Card } from "antd";
 import DefaultLayout from "../../layouts/DefaultLayout";
 
-import { getStats } from "../../api/api";
+import { getAffinityList, getAffinityFactorList } from "../../api/api";
+
+import { Data } from "../../data/Data";
 
 Chart.register(CategoryScale);
 
 function Analytics() {
-  const [nodes, setNodes] = useState([
-    {
-      id: 1,
-      label: "users"
-    },
-    {
-      id: 2,
-      label: "orders"
-    },
-    {
-      id: 3,
-      label: "items"
-    }
-  ])
-  const [edges, setEdges] = useState([
-    { from: 1, to: 2, label: "0" },
-    { from: 2, to: 1, label: "0" },
-    { from: 3, to: 2, label: "0" },
-    { from: 3, to: 1, label: "0" }
-  ])
+    const [messagesPassedChartData, setMessagesPassedChartData] = useState({
+        labels: Data.map((data) => data.connection),
 
-  const [messagesPassedChartData, setMessagesPassedChartData] = useState({
-    labels: Data.map((data) => data.connection),
-
-    datasets: [
-      {
-        label: "Amount of Messages passed",
-        data: Data.map((data) => data.messagesPassed),
-        borderColor: "black",
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  const [dataExchangedChartData, setDataExchangedChartData] = useState({
-    labels: Data.map((data) => data.connection),
-
-    datasets: [
-      {
-        label: "Amount of Data exchanged",
-        data: Data.map((data) => data.messagesPassed),
-        borderColor: "black",
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  const [comAffinitiesChartData, setComAffinitiesChartData] = useState({
-    labels: Data.map((data) => data.connection),
-
-    datasets: [
-      {
-        label: "Communication Affinities",
-        data: Data.map((data) => data.messagesPassed),
-        borderColor: "black",
-        borderWidth: 1,
-      },
-    ],
-  });
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await getStats();
-
-        setNodes([...data.nodes])
-
-        setEdges(data.edges.map(item => {
-          return {
-            from: item.from, to: item.to, label: `${item.affinity}`
-          }
-        }))
-
-        setMessagesPassedChartData({
-          ...messagesPassedChartData,
-          labels: data.messagesPassedEdges.map(
-            (item) => item.node1 + " - " + item.node2
-          ),
-          datasets: [
+        datasets: [
             {
-              label: "Amount of Messages passed",
-              data: data.messagesPassedEdges.map((item) => item.weight),
-              borderColor: "black",
-              borderWidth: 1,
+                label: "Amount of Messages passed",
+                data: Data.map((data) => data.messagesPassed),
+                borderColor: "black",
+                borderWidth: 1,
             },
-          ],
-        });
+        ],
+    })
 
-        setDataExchangedChartData({
-          ...messagesPassedChartData,
-          labels: data.dataExchangedEdges.map(
-            (item) => item.node1 + " - " + item.node2
-          ),
-          datasets: [
+    const [dataExchangedChartData, setDataExchangedChartData] = useState({
+        labels: Data.map((data) => data.connection),
+
+        datasets: [
             {
-              label: "Amount of Data exchanged",
-              data: data.dataExchangedEdges.map((item) => item.weight),
-              borderColor: "black",
-              borderWidth: 1,
+                label: "Amount of Messages passed",
+                data: Data.map((data) => data.messagesPassed),
+                borderColor: "black",
+                borderWidth: 1,
             },
-          ],
-        });
+        ],
+    })
 
-        setComAffinitiesChartData({
-          ...messagesPassedChartData,
-          labels: data.communicationAffinities.map(
-            (item) => item.node1 + " - " + item.node2
-          ),
-          datasets: [
+    const [affinityFactorChartData, setAffinityFactorChartData] = useState({
+        labels: Data.map((data) => data.connection),
+
+        datasets: [
             {
-              label: "Communication Affinities",
-              data: data.communicationAffinities.map((item) => item.affinity),
-              borderColor: "black",
-              borderWidth: 1,
+                label: "Affinity Factors",
+                data: Data.map((data) => data.messagesPassed),
+                borderColor: "black",
+                borderWidth: 1,
             },
-          ],
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+        ],
+    })
 
-    // Fetch data initially
-    fetchData();
+    const [microserviceNodes, setMicroserviceNodes] = useState([
+        {
+            id: 1,
+            label: "users"
+        },
+        {
+            id: 2,
+            label: "orders"
+        },
+        {
+            id: 3,
+            label: "items"
+        },
+        {
+            id: 4,
+            label: "inventory"
+        },
+        {
+            id: 5,
+            label: "email"
+        },
+        {
+            id: 6,
+            label: "payment"
+        }
+    ])
 
-    // Set up an interval to fetch data every, for example, 5 seconds
-    const intervalId = setInterval(fetchData, 5000);
+    const [microserviceEdges, setMicroserviceEdges] = useState([
+        { from: 1, to: 2, label: "0" },
+        { from: 2, to: 3, label: "0" },
+        { from: 3, to: 4, label: "0" },
+        { from: 4, to: 5, label: "0" },
+        { from: 5, to: 6, label: "0" },
+        { from: 6, to: 1, label: "0" }
+    ])
 
-    // Cleanup function to clear the interval when the component is unmounted
-    return () => clearInterval(intervalId);
-  }, []);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const { affinityList } = await getAffinityList();
+                const { affinityFactorList } = await getAffinityFactorList();
 
-  return (
-    <DefaultLayout>
-      <div className="grid grid-cols-3 gap-5 pb-3">
-        <Card title="Amount of messages passed">
-          <BarChart chartData={messagesPassedChartData} />
-        </Card>
+                setMessagesPassedChartData({
+                    ...messagesPassedChartData,
+                    labels: affinityList.map(
+                        (item) => item.src + " - " + item.dest
+                    ),
+                    datasets: [
+                        {
+                            label: "Amount of Messages passed",
+                            data: affinityList.map((item) => item.messagesPassed),
+                            borderColor: "black",
+                            borderWidth: 1,
+                        },
+                    ],
+                });
 
-        <Card title="Amount of data exchanged">
-          <BarChart chartData={dataExchangedChartData} />
-        </Card>
+                setDataExchangedChartData({
+                    ...messagesPassedChartData,
+                    labels: affinityList.map(
+                        (item) => item.src + " - " + item.dest
+                    ),
+                    datasets: [
+                        {
+                            label: "Amount of Data exchanged",
+                            data: affinityList.map((item) => item.dataExchanged),
+                            borderColor: "black",
+                            borderWidth: 1,
+                        },
+                    ],
+                });
 
-        <Card title="Communication Affinities">
-          <BarChart chartData={comAffinitiesChartData} />
-        </Card>
-      </div>
+                setAffinityFactorChartData({
+                    ...messagesPassedChartData,
+                    labels: affinityFactorList.map(
+                        (item) => item.src + " - " + item.dest
+                    ),
+                    datasets: [
+                        {
+                            label: "Amount of Data exchanged",
+                            data: affinityFactorList.map((item) => item.AF_x_y),
+                            borderColor: "black",
+                            borderWidth: 1,
+                        },
+                    ],
+                });
 
-      <div className="grid grid-cols-3 gap-5 pb-3">
-        <Card title="Microservice Distribution">
-          <UndirectedGraph nodes={nodes} edges={edges} />
-        </Card>
+                // Microservice communication graph construction
+                const uniqueLabels = [...new Set(affinityFactorList.flatMap(factor => [factor.src, factor.dest]))];
 
-        {/* <div className="">
-          <CommunicationTable data={edges} />
-        </div> */}
-      </div>
+                const microserviceNodes = uniqueLabels.map((label, index) => ({ id: index + 1, label }));
 
-    </DefaultLayout>
-  );
+                console.log(microserviceNodes);
+
+                setMicroserviceNodes(microserviceNodes)
+
+                const processAffinityFactors = () => {
+                    const processedList = affinityFactorList.map(factor => ({
+                        from: microserviceNodes.find(node => node.label === factor.src)?.id,
+                        to: microserviceNodes.find(node => node.label === factor.dest)?.id,
+                        label: factor.AF_x_y.toFixed(3).toString()
+                    }));
+
+                    return processedList;
+                };
+
+                const processedAffinityFactors = processAffinityFactors();
+
+                console.log(processedAffinityFactors);
+
+                setMicroserviceEdges([...processedAffinityFactors]);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        // Fetch data initially
+        fetchData();
+
+        // Set up an interval to fetch data every, for example, 5 seconds
+        const intervalId = setInterval(fetchData, 5000);
+
+        // Cleanup function to clear the interval when the component is unmounted
+        return () => clearInterval(intervalId);
+    }, []);
+
+    return (
+        <DefaultLayout>
+            <div className="grid grid-cols-3 gap-5 pb-3">
+                <Card title="Amount of messages passed">
+                    <BarChart chartData={messagesPassedChartData} />
+                </Card>
+
+                <Card title="Amount of data exchanged">
+                    <BarChart chartData={dataExchangedChartData} />
+                </Card>
+
+                <Card title="Communication Affinity Factors">
+                    <BarChart chartData={affinityFactorChartData} />
+                </Card>
+            </div>
+
+            <div className="grid grid-cols-3 gap-5 pb-3">
+                <Card title="Microservice Distribution">
+                    <UndirectedGraph nodes={microserviceNodes} edges={microserviceEdges} />
+                </Card>
+            </div>
+
+        </DefaultLayout>
+    )
 }
 
-export default Analytics;
+export default Analytics

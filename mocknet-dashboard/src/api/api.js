@@ -10,3 +10,14 @@ export const getStats = async () => {
     const { data } = await axios.get('http://localhost:1111/monitor/stats');
     return data;
 }
+
+export const getAffinityList = async () => {
+    const { data } = await axios.get('http://localhost:1111/monitor/affinity/');
+
+    return data;
+}
+
+export const getAffinityFactorList = async () => {
+    const { data } = await axios.get('http://localhost:1111/monitor/affinityFactor');
+    return data;
+}

@@ -19,7 +19,7 @@ exports.getAffinity = async (src, dest) => {
 
 exports.getAffinityList = async () => {
     try {
-        let affList = await AffinityModel.findOne({})
+        let affList = await AffinityModel.find({})
 
         return affList
     } catch (error) {
