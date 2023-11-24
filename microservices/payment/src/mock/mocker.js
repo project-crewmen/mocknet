@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const { getRandomInt, sleep } = require("../utils/utils");
 
-const Network = require("../models/networkModel")
+const Affinity = require("../models/affinityModel")
 const Communication = require("../models/comModel")
 
 const workflow = require("../data/workflow")
@@ -35,16 +35,16 @@ const followWorkflow = async () => {
         let serviceRequests = []
 
         for (const service of workflow.serviceList) {
-            var network = null
-            const prevNetwork = await Network.findOne({ sender: workflow.configurations.serviceName, receiver: service.apiInfo.service })
+            var affnity = null
+            const prevAffinity = await Affinity.findOne({ src: workflow.configurations.serviceName, dest: service.apiInfo.service })
 
-            if (prevNetwork !== null) {
-                network = prevNetwork
+            if (prevAffinity !== null) {
+                affnity = prevAffinity
             }
             else {
-                network = await Network.create({
-                    sender: workflow.configurations.serviceName,
-                    receiver: service.apiInfo.service,
+                affnity = await Affinity.create({
+                    src: workflow.configurations.serviceName,
+                    dest: service.apiInfo.service,
                     messagesPassed: 0,
                     dataExchanged: 0,
                 })
@@ -78,9 +78,9 @@ const followWorkflow = async () => {
                     console.log(`totalMessagePassed: ${totalMessagePassed}, totalDataEchanged: ${totalDataEchanged}`);
 
                     // Update Database Record
-                    const updatedNetwork = await Network.findOneAndUpdate({
-                        sender: workflow.configurations.serviceName,
-                        receiver: service.apiInfo.service,
+                    const updatedAffinity = await Affinity.findOneAndUpdate({
+                        src: workflow.configurations.serviceName,
+                        dest: service.apiInfo.service,
                     }, {
                         messagesPassed: totalMessagePassed,
                         dataExchanged: totalDataEchanged

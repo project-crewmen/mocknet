@@ -1,22 +1,33 @@
 const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
+dotenv.config({ path: "./.env" });
 
 const app = require("./src/app");
 const mocker = require("./src/mock/mocker");
 
 // DATABASE
-const DATABASE_URI_LOCALHOST = "mongodb://root:password@localhost:27017";
-const DATABASE_URI_DOCKER = "mongodb://root:password@mongo:27017";
+const connectMongoDB = async () => {
+  try {
+    const DATABASE_URI_LOCALHOST = "mongodb://root:password@localhost:27017";
+    const DATABASE_URI_DOCKER = "mongodb://root:password@mongo:27017";
 
-const dbURI = process.env.ENV === "localhost" ? DATABASE_URI_LOCALHOST : DATABASE_URI_DOCKER
+    const dbURI = process.env.ENV === "localhost" ? DATABASE_URI_LOCALHOST : DATABASE_URI_DOCKER
 
-mongoose.connect(dbURI);
+    await mongoose.connect(dbURI);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+connectMongoDB()
 
 // Listen for the connection event
 mongoose.connection.on('connected', () => {
   console.log("✔️ Database is connected successfully");
 
   // RUNNING SERVER
-  const PORT = 5003;
+  const PORT = process.env.PORT ? process.env.PORT : 5003;
   const server = app.listen(PORT, () => {
     console.log(`✔️  App running on port ${PORT}`);
   });

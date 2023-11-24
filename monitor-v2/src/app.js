@@ -13,6 +13,6 @@ app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "50kb" }));
 
-app.use("/monitor/affinity", monitorRoutes);
+app.use("/monitor", monitorRoutes);
 
 module.exports = app;
