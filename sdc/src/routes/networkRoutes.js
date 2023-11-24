@@ -6,5 +6,6 @@ const router = express.Router();
 
 // Link
 router.get("/:src/:dest", networkController.getLinkForMachines);
+router.get("/", networkController.getLinkMachinesList);
 
 module.exports = router;

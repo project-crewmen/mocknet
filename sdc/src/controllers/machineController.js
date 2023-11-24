@@ -6,3 +6,9 @@ exports.getMachine = async (req, res) => {
 
     res.status(200).json({ machine: data });
 }
+
+exports.getMachineList = async (req, res) => {
+    const data = await Machine.getMachineList()
+
+    res.status(200).json({ machineList: data });
+}

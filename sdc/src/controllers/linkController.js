@@ -6,3 +6,9 @@ exports.getLink = async (req, res) => {
 
     res.status(200).json({ link: data });
 }
+
+exports.getLinkList = async (req, res) => {
+    const data = await Link.getLinkList()
+
+    res.status(200).json({ linkList: data });
+}

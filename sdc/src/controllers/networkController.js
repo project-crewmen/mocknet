@@ -14,3 +14,9 @@ exports.getLinkForMachines = async (req, res) => {
         res.status(404).json({ link: null });
     }
 }
+
+exports.getLinkMachinesList = async (req, res) => {
+    const data = await Network.getLinkMachinesList()
+
+    res.status(200).json({ linkMachinesList: data });
+}

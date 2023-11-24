@@ -21,3 +21,15 @@ export const getAffinityFactorList = async () => {
     const { data } = await axios.get('http://localhost:1111/monitor/affinityFactor');
     return data;
 }
+
+export const getMachineList = async () => {
+    const { data } = await axios.get('http://localhost:2222/sdc/machine');
+
+    return data;
+}
+
+export const getLinkMachinesList = async () => {
+    const { data } = await axios.get('http://localhost:2222/sdc/network');
+
+    return data;
+}

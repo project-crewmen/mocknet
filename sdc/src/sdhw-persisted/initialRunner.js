@@ -83,10 +83,10 @@ const run = async () => {
         // Construct network instance
         const network_inst = {
             machines: {
-                source: src,
-                destination: dest
+                source: src._id,
+                destination: dest._id
             },
-            link: link
+            link: link._id
         }
 
         // Save

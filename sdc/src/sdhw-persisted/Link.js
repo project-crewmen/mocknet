@@ -30,7 +30,18 @@ exports.initializeLink = async (link) => {
 
 exports.getLink = async (linkName) => {
     try {
-        const link = await LinkModel.findOne({name: linkName})
+        const link = await LinkModel.findOne({ name: linkName })
+
+        return link
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}
+
+exports.getLinkList = async () => {
+    try {
+        const link = await LinkModel.find({})
 
         return link
     } catch (error) {

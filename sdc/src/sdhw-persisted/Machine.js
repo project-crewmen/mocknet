@@ -38,3 +38,14 @@ exports.getMachine = async (machineName) => {
         throw error;
     }
 }
+
+exports.getMachineList = async () => {
+    try {
+        const machineList = await MachineModel.find({})
+
+        return machineList
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}

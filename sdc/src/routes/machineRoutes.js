@@ -11,5 +11,6 @@ router.use("/:machineName/container", containerRouter);
 
 // Machine
 router.get("/:machineName", machineController.getMachine);
+router.get("/", machineController.getMachineList);
 
 module.exports = router;

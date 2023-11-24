@@ -1,6 +1,6 @@
 const NetworkModel = require("../models/networkModel")
 
-exports.clearNetwork = async (network) => {
+exports.clearNetwork = async () => {
     try {
         // Check if the network instance already exists
         const existingNet = await NetworkModel.findOne({});
@@ -44,6 +44,17 @@ exports.getAssociatedLink = async (srcMachine, destMachine) => {
         } else {
             return null
         }
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}
+
+exports.getLinkMachinesList = async () => {
+    try {
+        const linkMachinesList = await NetworkModel.find({}).populate("link machines.source machines.destination", "name latency")
+
+        return linkMachinesList
     } catch (error) {
         console.error(`❌ Error: ${error.message}`);
         throw error;
