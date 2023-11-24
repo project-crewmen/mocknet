@@ -15,8 +15,6 @@ exports.getContainerList = async (req, res) => {
     res.status(200).json({ containerList: data });
 }
 
-
-
 exports.startContainer = async (req, res) => {
     const data = await Container.startContainer(req.params["machineName"], req.body)
 

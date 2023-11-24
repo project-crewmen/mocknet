@@ -48,12 +48,12 @@ function Cluster() {
   ])
 
   const [machines, setMachines] = useState([{
-    machineName: "machine-01",
-    cpuUsage: 304,
-    memoryUsage: 25840,
-    diskUsage: 13072,
-    containerDeployments: ["test"]
-  }])
+    "machineName": "machine-01",
+    "cpuUsage": { cpu: 304, cpuAllocated: 304 },
+    "memoryUsage": { memory: 304, memoryAllocated: 304 },
+    "diskUsage": { disk: 304, diskAllocated: 304 },
+    "containerDeployments": ["test"]
+  },])
 
   useEffect(() => {
     if (startClusterMonitoringClicked) {
@@ -64,10 +64,10 @@ function Cluster() {
           // Machines table
           const mList = machineList.map((m, index) => ({
             machineName: m.name,
-            cpuUsage: 304,
-            memoryUsage: 25840,
-            diskUsage: 13072,
-            containerDeployments: m.container_deployments.length > 0 ? m.container_deployments.map(item => item.name): []
+            cpuUsage: { cpu: m.runtime_stack.cpu, cpuAllocated: m.runtime_stack.cpu_allocated },
+            memoryUsage: { memory: m.runtime_stack.memory, memoryAllocated: m.runtime_stack.memory_allocated },
+            diskUsage: { disk: m.runtime_stack.storage, diskAllocated: m.runtime_stack.storage_allocated },
+            containerDeployments: m.container_deployments.length > 0 ? m.container_deployments.map(item => item.name) : []
           }));
 
           console.log(mList);

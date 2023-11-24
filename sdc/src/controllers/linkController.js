@@ -12,3 +12,9 @@ exports.getLinkList = async (req, res) => {
 
     res.status(200).json({ linkList: data });
 }
+
+exports.getContainerLink = async (req, res) => {
+    const data = await Link.getContainerLink(req.params["srcContainer"], req.params['destContainer'])
+
+    res.status(200).json({ containerLink: data });
+}

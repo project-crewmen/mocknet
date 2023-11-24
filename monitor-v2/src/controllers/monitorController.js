@@ -23,3 +23,15 @@ exports.getAffinityFactorList = async (req, res) => {
 
     res.status(200).json({ affinityFactorList: affinityFactorList });
 }
+
+exports.getAffinityCost = async (req, res) => {
+    const affinityCost = await Affinity.getAffinityCost(req.params['src'], req.params['dest'])
+
+    res.status(200).json({ affinityCost: affinityCost });
+}
+
+exports.getAffinityCostList = async (req, res) => {
+    const affinityCostList = await Affinity.getAffinityCostList()
+
+    res.status(200).json({ affinityCostList: affinityCostList });
+}

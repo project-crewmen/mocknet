@@ -24,6 +24,14 @@ const machineSchema = new mongoose.Schema({
         ip_address: { type: String, required: true },
         mac_address: { type: String, required: true }
     },
+    runtime_stack: {
+        cpu: { type: Number, required: true },
+        cpu_allocated: { type: Number, required: true },
+        memory: { type: Number, required: true },
+        memory_allocated: { type: Number, required: true },
+        storage: { type: Number, required: true },
+        storage_allocated: { type: Number, required: true },
+    },
     container_deployments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Container' }]
 });
 

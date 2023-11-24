@@ -1,5 +1,7 @@
 const MachineModel = require("../models/machineModel")
 
+const { convertSizeToBytes } = require("../utils/convertor")
+
 exports.initializeMachine = async (machine) => {
     try {
         // Check if the machine with the same name already exists
@@ -17,7 +19,19 @@ exports.initializeMachine = async (machine) => {
         }
 
         // Create a new machine
-        const newMachine = new MachineModel(machine);
+        const m = {
+            ...machine,
+            runtime_stack: {
+                cpu: 1,
+                cpu_allocated: 0,
+                memory: convertSizeToBytes(machine.memory.total),
+                memory_allocated: 0,
+                storage: convertSizeToBytes(machine.storage.capacity),
+                storage_allocated: 0,
+            }
+        }
+
+        const newMachine = new MachineModel(m);
         const savedMachine = await newMachine.save();
         console.log(`✅ Machine created: ${savedMachine.name}`);
 

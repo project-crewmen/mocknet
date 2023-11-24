@@ -1,4 +1,6 @@
 const LinkModel = require("../models/linkModel")
+const ContainerModel = require("../models/containerModel")
+const NetworkModel = require("../models/networkModel")
 
 exports.initializeLink = async (link) => {
     try {
@@ -44,6 +46,26 @@ exports.getLinkList = async () => {
         const link = await LinkModel.find({})
 
         return link
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}
+
+exports.getContainerLink = async (srcContainer, destContainer) => {
+    try {
+        const srcCont = await ContainerModel.findOne({ name: srcContainer })
+        const destCont = await ContainerModel.findOne({ name: destContainer })
+
+        const link = await NetworkModel.findOne({ machines: { source: srcCont.deployed_machine, destination: destCont.deployed_machine } }).populate("link", "")
+
+        if (link) {
+            return {
+                latency: link.link.latency
+            }
+        } else {
+            return null
+        }
     } catch (error) {
         console.error(`❌ Error: ${error.message}`);
         throw error;

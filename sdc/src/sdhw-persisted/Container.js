@@ -1,9 +1,11 @@
 const ContainerModel = require("../models/containerModel")
-const MachineModel = require("../models/machineModel") 
+const MachineModel = require("../models/machineModel")
+
+const { convertSizeToBytes } = require("../utils/convertor")
 
 exports.getContainer = async (machineName, containerName) => {
     try {
-        const machines = await MachineModel.findOne({name: machineName}).populate("container_deployments", "")
+        const machines = await MachineModel.findOne({ name: machineName }).populate("container_deployments", "")
 
         const c = machines.container_deployments.find(c => c.name === containerName)
 
@@ -16,7 +18,7 @@ exports.getContainer = async (machineName, containerName) => {
 
 exports.getContainerList = async (machineName) => {
     try {
-        const machines = await MachineModel.findOne({name: machineName}).populate("container_deployments", "")
+        const machines = await MachineModel.findOne({ name: machineName }).populate("container_deployments", "")
 
         return machines.container_deployments
     } catch (error) {
@@ -41,16 +43,24 @@ exports.startContainer = async (machineName, container) => {
             }
         }
 
+        // Add the container to the machine
+        const machine = await MachineModel.findOne({ name: machineName })
+
+        console.log(container.resource_requirements);
+
+        machine.runtime_stack.cpu_allocated = machine.runtime_stack.cpu_allocated + container.resource_requirements.cpu
+        machine.runtime_stack.memory_allocated = machine.runtime_stack.memory_allocated +  convertSizeToBytes(container.resource_requirements.memory)
+        machine.runtime_stack.storage_allocated = machine.runtime_stack.storage_allocated + convertSizeToBytes(container.resource_requirements.storage)
+
+        await machine.save()
+
         // Create a new container
-        const newContainer = new ContainerModel(container);
+        const newContainer = new ContainerModel({...container, deployed_machine: machine._id});
         const savedContainer = await newContainer.save();
         console.log(`✅ Container created: ${savedContainer.name}`);
 
-        // Add the container to the machine
-        const machine = await MachineModel.findOne({name: machineName})
-
-        if(!machine.container_deployments.includes(savedContainer._id)){
-            await machine.updateOne({$push: {container_deployments: savedContainer._id}})
+        if (!machine.container_deployments.includes(savedContainer._id)) {
+            await machine.updateOne({ $push: { container_deployments: savedContainer._id } })
         }
 
         return savedContainer

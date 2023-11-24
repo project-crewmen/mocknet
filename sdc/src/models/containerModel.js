@@ -12,6 +12,10 @@ const containerSchema = new mongoose.Schema({
         memory: { type: String, required: true },
         storage: { type: String, required: true }
     },
+    deployed_machine: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Machine' // Reference to the Machine model
+    }
 });
 
 const Container = mongoose.model('Container', containerSchema);

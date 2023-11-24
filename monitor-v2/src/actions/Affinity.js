@@ -1,5 +1,8 @@
+const axios = require("axios")
+
 const AffinityModel = require("../models/affinityModel")
 
+const { convertTimeToSeconds } = require("../utils/convertor")
 const { calculateAffinityFactor, calculateAffinityCost, calculateNetCost, calculateAverageAffinityCost } = require("../utils/affinityHelper")
 
 exports.getAffinity = async (src, dest) => {
@@ -46,7 +49,7 @@ exports.getAffinityFactor = async (src, dest) => {
             totalD = totalD + a.dataExchanged
         }
 
-        const AF_x_y = calculateAffinityFactor(aff.messagesPassed, totalM, aff.dataExchanged, totalD, w=0.5)
+        const AF_x_y = calculateAffinityFactor(aff.messagesPassed, totalM, aff.dataExchanged, totalD, w = 0.5)
 
         return AF_x_y
     } catch (error) {
@@ -70,7 +73,7 @@ exports.getAffinityFactorList = async () => {
         }
 
         for (const a of affList) {
-            const AF_x_y = calculateAffinityFactor(a.messagesPassed, totalM, a.dataExchanged, totalD, w=0.5)
+            const AF_x_y = calculateAffinityFactor(a.messagesPassed, totalM, a.dataExchanged, totalD, w = 0.5)
 
             AFF_List.push({
                 src: a.src,
@@ -78,8 +81,46 @@ exports.getAffinityFactorList = async () => {
                 AF_x_y: AF_x_y
             })
         }
-        
+
         return AFF_List
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}
+
+exports.getAffinityCost = async (src, dest) => {
+    try {
+        const AF_x_y = await this.getAffinityFactor(src, dest)
+
+        const { data } = await axios.get(`http://localhost:2222/sdc/link/${src}/${dest}`)
+
+        const AC_x_y = calculateAffinityCost(AF_x_y, convertTimeToSeconds(data.containerLink.latency), 1000000)
+
+        return AC_x_y
+    } catch (error) {
+        console.error(`❌ Error: ${error.message}`);
+        throw error;
+    }
+}
+
+exports.getAffinityCostList = async () => {
+    try {
+        let AC_List = []
+
+        const AFF_List = await this.getAffinityFactorList()
+
+        for (const affItem of AFF_List) {
+            const AC_x_y = await this.getAffinityCost(affItem.src, affItem.dest)
+
+            AC_List.push({
+                src: affItem.src,
+                dest: affItem.dest,
+                AC_x_y: AC_x_y
+            })
+        }
+
+        return AC_List
     } catch (error) {
         console.error(`❌ Error: ${error.message}`);
         throw error;
