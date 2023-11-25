@@ -9,7 +9,7 @@ exports.machine01 = {
         clock_speed: "2.8 GHz"
     },
     memory: {
-        total: "8 GB",
+        total: "4 GB",
         type: "DDR4",
         speed: "2133 MHz"
     },
@@ -30,13 +30,13 @@ exports.machine02 = {
     operating_system: "Windows",
     architecture: "x86_64",
     cpu: {
-        model: "AMD Ryzen 7",
-        cores: 8,
-        threads: 16,
-        clock_speed: "3.5 GHz"
+        model: "AMD Ryzen 5",
+        cores: 6,
+        threads: 12,
+        clock_speed: "3.0 GHz"
     },
     memory: {
-        total: "16 GB",
+        total: "4 GB",
         type: "DDR4",
         speed: "2666 MHz"
     },
@@ -63,7 +63,7 @@ exports.machine03 = {
         clock_speed: "2.0 GHz"
     },
     memory: {
-        total: "12 GB",
+        total: "8 GB",
         type: "LPDDR4",
         speed: "1600 MHz"
     },
@@ -84,10 +84,10 @@ exports.machine04 = {
     operating_system: "Linux",
     architecture: "x86_64",
     cpu: {
-        model: "Intel Core i5",
-        cores: 4,
-        threads: 8,
-        clock_speed: "2.8 GHz"
+        model: "Intel Core i7",
+        cores: 6,
+        threads: 12,
+        clock_speed: "3.0 GHz"
     },
     memory: {
         total: "8 GB",
@@ -100,8 +100,8 @@ exports.machine04 = {
     },
     network_interfaces: {
         name: "eth0",
-        ip_address: "192.168.1.10",
-        mac_address: "00:1a:2b:3c:4d:5a"
+        ip_address: "192.168.1.13",
+        mac_address: "00:1a:2b:3c:4d:5d"
     },
     container_deployments: []
 }
@@ -117,7 +117,7 @@ exports.machine05 = {
         clock_speed: "3.5 GHz"
     },
     memory: {
-        total: "16 GB",
+        total: "4 GB",
         type: "DDR4",
         speed: "2666 MHz"
     },
@@ -127,8 +127,8 @@ exports.machine05 = {
     },
     network_interfaces: {
         name: "eth0",
-        ip_address: "192.168.1.11",
-        mac_address: "00:1a:2b:3c:4d:5b"
+        ip_address: "192.168.1.14",
+        mac_address: "00:1a:2b:3c:4d:5e"
     },
     container_deployments: []
 }
@@ -138,13 +138,13 @@ exports.machine06 = {
     operating_system: "Linux",
     architecture: "ARM",
     cpu: {
-        model: "ARM Cortex-A72",
-        cores: 8,
-        threads: 8,
-        clock_speed: "2.0 GHz"
+        model: "ARM Cortex-A76",
+        cores: 12,
+        threads: 12,
+        clock_speed: "2.5 GHz"
     },
     memory: {
-        total: "12 GB",
+        total: "4 GB",
         type: "LPDDR4",
         speed: "1600 MHz"
     },
@@ -154,8 +154,8 @@ exports.machine06 = {
     },
     network_interfaces: {
         name: "eth0",
-        ip_address: "192.168.1.12",
-        mac_address: "00:1a:2b:3c:4d:5c"
+        ip_address: "192.168.1.15",
+        mac_address: "00:1a:2b:3c:4d:5f"
     },
     container_deployments: []
 }

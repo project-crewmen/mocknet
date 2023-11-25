@@ -11,22 +11,7 @@ const linkSchema = new mongoose.Schema({
     duplex_mode: { type: String, required: true },
     physical_medium: { type: String, required: true },
     distance: { type: String, required: true },
-    qos_parameters: {
-        priority: { type: String, required: true },
-        service_level: { type: String, required: true }
-    },
-    redundancy: { type: Boolean, required: true },
-    security: {
-        encryption: { type: String, required: true },
-        authentication: { type: String, required: true }
-    },
-    scalability: { type: String, required: true },
     protocol: { type: String, required: true },
-    error_handling: { type: String, required: true },
-    compatibility: { type: String, required: true },
-    cost: { type: String, required: true },
-    configuration_management: { type: String, required: true },
-    automation: { type: String, required: true }
 });
 
 const Link = mongoose.model('Link', linkSchema);
