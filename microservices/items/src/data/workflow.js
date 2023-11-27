@@ -6,7 +6,7 @@ const workflow = {
     },
     serviceList: [
         {
-            apiInfo: apis.inventory,
+            apiInfo: apis.users,
             requests: {
                 type: "random",
                 min: 1,

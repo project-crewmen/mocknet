@@ -79,8 +79,92 @@ exports.machine03 = {
     container_deployments: []
 }
 
+exports.machine04 = {
+    name: "machine-04",
+    operating_system: "Linux",
+    architecture: "x86_64",
+    cpu: {
+        model: "Intel Core i7",
+        cores: 6,
+        threads: 12,
+        clock_speed: "3.0 GHz"
+    },
+    memory: {
+        total: "8 GB",
+        type: "DDR4",
+        speed: "2133 MHz"
+    },
+    storage: {
+        type: "HDD",
+        capacity: "1 TB"
+    },
+    network_interfaces: {
+        name: "eth0",
+        ip_address: "192.168.1.13",
+        mac_address: "00:1a:2b:3c:4d:5d"
+    },
+    container_deployments: []
+}
+
+exports.machine05 = {
+    name: "machine-05",
+    operating_system: "Windows",
+    architecture: "x86_64",
+    cpu: {
+        model: "AMD Ryzen 7",
+        cores: 8,
+        threads: 16,
+        clock_speed: "3.5 GHz"
+    },
+    memory: {
+        total: "4 GB",
+        type: "DDR4",
+        speed: "2666 MHz"
+    },
+    storage: {
+        type: "SSD",
+        capacity: "512 GB"
+    },
+    network_interfaces: {
+        name: "eth0",
+        ip_address: "192.168.1.14",
+        mac_address: "00:1a:2b:3c:4d:5e"
+    },
+    container_deployments: []
+}
+
+exports.machine06 = {
+    name: "machine-06",
+    operating_system: "Linux",
+    architecture: "ARM",
+    cpu: {
+        model: "ARM Cortex-A76",
+        cores: 12,
+        threads: 12,
+        clock_speed: "2.5 GHz"
+    },
+    memory: {
+        total: "4 GB",
+        type: "LPDDR4",
+        speed: "1600 MHz"
+    },
+    storage: {
+        type: "NVMe SSD",
+        capacity: "256 GB"
+    },
+    network_interfaces: {
+        name: "eth0",
+        ip_address: "192.168.1.15",
+        mac_address: "00:1a:2b:3c:4d:5f"
+    },
+    container_deployments: []
+}
+
 exports.machines = [
     this.machine01,
     this.machine02,
     this.machine03,
+    this.machine04,
+    this.machine05,
+    this.machine06,
 ];

@@ -89,13 +89,13 @@ exports.getAffinityFactorList = async () => {
     }
 }
 
-exports.getAffinityCost = async (src, dest) => {
+exports.getAffinityCost = async (src, dest, amp = 1.0) => {
     try {
         const AF_x_y = await this.getAffinityFactor(src, dest)
 
         const { data } = await axios.get(`http://localhost:2222/sdc/link/${src}/${dest}`)
 
-        const AC_x_y = calculateAffinityCost(AF_x_y, convertTimeToSeconds(data.containerLink.latency), 1000000)
+        const AC_x_y = calculateAffinityCost(AF_x_y, convertTimeToSeconds(data.containerLink.latency), amp)
 
         return AC_x_y
     } catch (error) {
@@ -104,14 +104,14 @@ exports.getAffinityCost = async (src, dest) => {
     }
 }
 
-exports.getAffinityCostList = async () => {
+exports.getAffinityCostList = async (amp) => {
     try {
         let AC_List = []
 
         const AFF_List = await this.getAffinityFactorList()
 
         for (const affItem of AFF_List) {
-            const AC_x_y = await this.getAffinityCost(affItem.src, affItem.dest)
+            const AC_x_y = await this.getAffinityCost(affItem.src, affItem.dest, amp)
 
             AC_List.push({
                 src: affItem.src,
