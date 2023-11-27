@@ -21,8 +21,12 @@ exports.mock = async (req, res) => {
             reproduce()
             break;
 
+        case "pause":
+            pause()
+            break;
+
         default:
-            followWorkflow()
+            pause()
             break;
     }
 };
@@ -157,4 +161,8 @@ const reproduce = async () => {
         console.log(`------- wait ${globalDelay}ms until next round of mock requests ---`)
         await sleep(globalDelay);
     }
+}
+
+const pause = async () => {
+    console.log("⏸ Service is paused");
 }
