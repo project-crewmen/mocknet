@@ -3,10 +3,10 @@ version: '3'
 services:
   # User Interface
   # mocknet-dashboard:
-  #   image: mocknet/mocknet-dashboard
+  #   image: mocknet/crewmen-dashboard
   #   container_name: dashboard
   #   build:
-  #     context: ./mocknet-dashboard
+  #     context: ./crewmen-dashboard
   #   ports:
   #     - 8080:8080
 
