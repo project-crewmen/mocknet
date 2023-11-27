@@ -48,7 +48,7 @@ exports.startContainer = async (machineName, container) => {
 
         console.log(container.resource_requirements);
 
-        machine.runtime_stack.cpu_allocated = machine.runtime_stack.cpu_allocated + container.resource_requirements.cpu
+        machine.runtime_stack.cpu_allocated = machine.runtime_stack.cpu_allocated*1.0 + container.resource_requirements.cpu*1.0
         machine.runtime_stack.memory_allocated = machine.runtime_stack.memory_allocated +  convertSizeToBytes(container.resource_requirements.memory)
         machine.runtime_stack.storage_allocated = machine.runtime_stack.storage_allocated + convertSizeToBytes(container.resource_requirements.storage)
 

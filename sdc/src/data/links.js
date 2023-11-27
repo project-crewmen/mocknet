@@ -40,6 +40,20 @@ exports.link03 = {
     protocol: "TCP/IP",
 };
 
+exports.loopbackLink = {
+    name: "loopback-link",
+    type: "Loopback",
+    bandwidth: "0",
+    latency: "0",
+    jitter: "0",
+    packet_loss: "0",
+    reliability: "0",
+    duplex_mode: "0",
+    physical_medium: "0",
+    distance: "0",
+    protocol: "0",
+};
+
 
 exports.links = [
     this.link01,

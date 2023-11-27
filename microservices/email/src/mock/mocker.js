@@ -25,6 +25,10 @@ exports.mock = async (req, res) => {
             pause()
             break;
 
+        case "clear":
+            clear()
+            break;
+
         default:
             pause()
             break;
@@ -165,4 +169,25 @@ const reproduce = async () => {
 
 const pause = async () => {
     console.log("⏸ Service is paused");
+}
+
+const clear = async () => {
+    try {
+        // Check if the network instance already exists
+        const coms = await Communication.findOne({});
+
+        if (coms) {
+            try {
+                // If it exists, delete it
+                await Communication.deleteMany({});
+                console.log("✅ Previous service communications are cleared");
+            } catch (error) {
+                console.error(`❌ Error clearing previous communications: ${error.message}`);
+                throw error;
+            }
+        }
+    } catch (error) {
+        console.error(`❌ Error clearing previous communications: ${error.message}`);
+        throw error;
+    }
 }

@@ -94,6 +94,24 @@ const run = async () => {
         // Save
         await Network.initializeNetwork(network_inst)
     }
+
+    // Add loopback interfaces
+    const loopbackLink = await Link.initializeLink(links_data.loopbackLink);
+
+    const savedMachines = await Machine.getMachineList()
+    for (const sm of savedMachines) {
+        // Construct network instance
+        const network_inst = {
+            machines: {
+                source: sm._id,
+                destination: sm._id
+            },
+            link: loopbackLink._id
+        }
+
+        // Save
+        await Network.initializeNetwork(network_inst)
+    }
 }
 
 module.exports = { run }
