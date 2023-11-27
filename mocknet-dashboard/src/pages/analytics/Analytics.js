@@ -108,7 +108,8 @@ function Analytics() {
                             {
                                 label: "Amount of Messages passed",
                                 data: affinityList.map((item) => item.messagesPassed),
-                                borderColor: "black",
+                                backgroundColor: "#B7EBB0",
+                                borderColor: "#313930",
                                 borderWidth: 1,
                             },
                         ],
@@ -123,7 +124,8 @@ function Analytics() {
                             {
                                 label: "Amount of Data exchanged",
                                 data: affinityList.map((item) => item.dataExchanged),
-                                borderColor: "black",
+                                backgroundColor: "#A5D3D3",
+                                borderColor: "#405252",
                                 borderWidth: 1,
                             },
                         ],
@@ -138,7 +140,8 @@ function Analytics() {
                             {
                                 label: "Amount of Data exchanged",
                                 data: affinityFactorList.map((item) => item.AF_x_y),
-                                borderColor: "black",
+                                backgroundColor: "#D7DA9E",
+                                borderColor: "#414230",
                                 borderWidth: 1,
                             },
                         ],

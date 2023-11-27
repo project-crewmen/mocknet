@@ -13,7 +13,7 @@ function UndirectedGraph({ nodes, edges }) {
         edges: {
             color: "#000000"
         },
-        height: "500px"
+        height: "500px",
     };
 
     const events = {

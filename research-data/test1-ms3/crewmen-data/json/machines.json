@@ -1,0 +1,163 @@
+{
+    "machineList": [
+        {
+            "cpu": {
+                "model": "Intel Core i5",
+                "cores": 4,
+                "threads": 8,
+                "clock_speed": "2.8 GHz"
+            },
+            "memory": {
+                "total": "4 GB",
+                "type": "DDR4",
+                "speed": "2133 MHz"
+            },
+            "storage": {
+                "type": "HDD",
+                "capacity": "1 TB"
+            },
+            "network_interfaces": {
+                "name": "eth0",
+                "ip_address": "192.168.1.10",
+                "mac_address": "00:1a:2b:3c:4d:5a"
+            },
+            "runtime_stack": {
+                "cpu": 1,
+                "cpu_allocated": 0.5,
+                "memory": 4294967296,
+                "memory_allocated": 1073741824,
+                "storage": 1099511627776,
+                "storage_allocated": 524288000
+            },
+            "_id": "6564b40d7a04f67158efe818",
+            "name": "machine-01",
+            "operating_system": "Linux",
+            "architecture": "x86_64",
+            "container_deployments": [
+                {
+                    "port_mappings": {
+                        "host_port": 5000,
+                        "container_port": 5000
+                    },
+                    "resource_requirements": {
+                        "cpu": 0.5,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    },
+                    "_id": "6564b41d7a04f67158efe840",
+                    "name": "users",
+                    "image": "mocknet/users",
+                    "deployed_machine": "6564b40d7a04f67158efe818",
+                    "__v": 0
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "cpu": {
+                "model": "AMD Ryzen 5",
+                "cores": 6,
+                "threads": 12,
+                "clock_speed": "3.0 GHz"
+            },
+            "memory": {
+                "total": "4 GB",
+                "type": "DDR4",
+                "speed": "2666 MHz"
+            },
+            "storage": {
+                "type": "SSD",
+                "capacity": "512 GB"
+            },
+            "network_interfaces": {
+                "name": "eth0",
+                "ip_address": "192.168.1.11",
+                "mac_address": "00:1a:2b:3c:4d:5b"
+            },
+            "runtime_stack": {
+                "cpu": 1,
+                "cpu_allocated": 0.5,
+                "memory": 4294967296,
+                "memory_allocated": 1073741824,
+                "storage": 549755813888,
+                "storage_allocated": 524288000
+            },
+            "_id": "6564b40d7a04f67158efe81b",
+            "name": "machine-02",
+            "operating_system": "Windows",
+            "architecture": "x86_64",
+            "container_deployments": [
+                {
+                    "port_mappings": {
+                        "host_port": 5001,
+                        "container_port": 5001
+                    },
+                    "resource_requirements": {
+                        "cpu": 0.5,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    },
+                    "_id": "6564b41f7a04f67158efe847",
+                    "name": "orders",
+                    "image": "mocknet/orders",
+                    "deployed_machine": "6564b40d7a04f67158efe81b",
+                    "__v": 0
+                }
+            ],
+            "__v": 0
+        },
+        {
+            "cpu": {
+                "model": "ARM Cortex-A72",
+                "cores": 8,
+                "threads": 8,
+                "clock_speed": "2.0 GHz"
+            },
+            "memory": {
+                "total": "8 GB",
+                "type": "LPDDR4",
+                "speed": "1600 MHz"
+            },
+            "storage": {
+                "type": "NVMe SSD",
+                "capacity": "256 GB"
+            },
+            "network_interfaces": {
+                "name": "eth0",
+                "ip_address": "192.168.1.12",
+                "mac_address": "00:1a:2b:3c:4d:5c"
+            },
+            "runtime_stack": {
+                "cpu": 1,
+                "cpu_allocated": 0.5,
+                "memory": 8589934592,
+                "memory_allocated": 1073741824,
+                "storage": 274877906944,
+                "storage_allocated": 524288000
+            },
+            "_id": "6564b40d7a04f67158efe81e",
+            "name": "machine-03",
+            "operating_system": "Linux",
+            "architecture": "ARM",
+            "container_deployments": [
+                {
+                    "port_mappings": {
+                        "host_port": 5002,
+                        "container_port": 5002
+                    },
+                    "resource_requirements": {
+                        "cpu": 0.5,
+                        "memory": "1 GB",
+                        "storage": "500 MB"
+                    },
+                    "_id": "6564b4227a04f67158efe84e",
+                    "name": "items",
+                    "image": "mocknet/items",
+                    "deployed_machine": "6564b40d7a04f67158efe81e",
+                    "__v": 0
+                }
+            ],
+            "__v": 0
+        }
+    ]
+}
