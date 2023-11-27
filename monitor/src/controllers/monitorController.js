@@ -33,5 +33,27 @@ exports.getAffinityCost = async (req, res) => {
 exports.getAffinityCostList = async (req, res) => {
     const affinityCostList = await Affinity.getAffinityCostList(req.params['amp'])
 
-    res.status(200).json({ affinityCostList: affinityCostList });
+    res.status(200).json({ affinityCostList: affinityCostList});
+}
+
+exports.getAffinityCostListDetailed = async (req, res) => {
+    const affinityCostList = await Affinity.getAffinityCostList(req.params['amp'])
+
+    let netCost = 0
+
+    for (const ac of affinityCostList) {
+        netCost = netCost + ac.AC_x_y
+    }
+
+    const avgCost = netCost !== 0 ? netCost / affinityCostList.length : 0
+
+    let hacs = []
+
+    for (const ac of affinityCostList) {
+        if(ac.AC_x_y >= avgCost) {
+            hacs.push(ac)
+        }
+    }
+
+    res.status(200).json({ affinityCostList: affinityCostList, netCost: netCost, avgCost, avgCost, hacs: hacs });
 }

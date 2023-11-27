@@ -157,7 +157,7 @@ function Analytics() {
                         const processedList = affinityFactorList.map(factor => ({
                             from: microserviceNodes.find(node => node.label === factor.src)?.id,
                             to: microserviceNodes.find(node => node.label === factor.dest)?.id,
-                            label: factor.AF_x_y.toFixed(3).toString()
+                            label: factor.AF_x_y.toFixed(4).toString()
                         }));
 
                         return processedList;
@@ -185,12 +185,10 @@ function Analytics() {
     const handleStartClick = () => {
         // Set startClicked to true when the Start button is clicked
         setStartMonitoringClicked(!startMonitoringClicked);
-    };
 
-    useEffect(() => {
         // Save the startClicked state to local storage
-        localStorage.setItem('startMonitoringClicked', JSON.stringify(startMonitoringClicked));
-    }, [startMonitoringClicked]);
+        localStorage.setItem('startMonitoringClicked', JSON.stringify(!startMonitoringClicked));
+    };
 
     useEffect(() => {
         // Load the startClicked state from local storage on component mount
@@ -202,7 +200,7 @@ function Analytics() {
 
     return (
         <DefaultLayout>
-            <div className="mb-3 inline-flex items-center justify-between w-full bg-gradient-to-r from-blue-300 to-gray-300 p-2 border border-gray-300 rounded-lg">
+            <div className="mb-3 inline-flex items-center justify-between w-full bg-gradient-to-r from-gray-300 to-gray-300 p-2 border border-gray-300 rounded-lg">
                 <div className="text-xl font-normal text-gray-800 pl-3">Microservice Monitoring</div>
 
                 <Button type="primary" size="large" className={startMonitoringClicked ? "bg-red-500" : "bg-blue-500"} onClick={handleStartClick}>

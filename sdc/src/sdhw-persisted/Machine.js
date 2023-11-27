@@ -2,6 +2,27 @@ const MachineModel = require("../models/machineModel")
 
 const { convertSizeToBytes } = require("../utils/convertor")
 
+exports.clearMachines = async () => {
+    try {
+        // Check if the network instance already exists
+        const existingMachines = await MachineModel.findOne({});
+
+        if (existingMachines) {
+            try {
+                // If it exists, delete it
+                await MachineModel.deleteMany({});
+                console.log(`✅ Existing machines deleted`);
+            } catch (error) {
+                console.error(`❌ Error deleting existing machines: ${error.message}`);
+                throw error;
+            }
+        }
+    } catch (error) {
+        console.error(`❌ Error creating machines instance: ${error.message}`);
+        throw error;
+    }
+}
+
 exports.initializeMachine = async (machine) => {
     try {
         // Check if the machine with the same name already exists

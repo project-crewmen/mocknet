@@ -5,8 +5,9 @@ import DefaultLayout from "../../layouts/DefaultLayout";
 
 import UndirectedGraph from "../../components/graphs/UndirectedGraph";
 import MachinesTable from "../../components/data-tables/MachinesTable";
+import LinksTable from "../../components/data-tables/LinksTable";
 
-import { getMachineList, getLinkMachinesList } from "../../api/api";
+import { getMachineList, getLinkList, getLinkMachinesList } from "../../api/api";
 
 function Cluster() {
   const [startClusterMonitoringClicked, setStartClusterMonitoringClicked] = useState(false);
@@ -55,52 +56,76 @@ function Cluster() {
     "containerDeployments": ["test"]
   },])
 
-  useEffect(() => {
-    if (startClusterMonitoringClicked) {
-      const fetchData = async () => {
-        try {
-          const { machineList } = await getMachineList();
-
-          // Machines table
-          const mList = machineList.map((m, index) => ({
-            machineName: m.name,
-            cpuUsage: { cpu: m.runtime_stack.cpu, cpuAllocated: m.runtime_stack.cpu_allocated },
-            memoryUsage: { memory: m.runtime_stack.memory, memoryAllocated: m.runtime_stack.memory_allocated },
-            diskUsage: { disk: m.runtime_stack.storage, diskAllocated: m.runtime_stack.storage_allocated },
-            containerDeployments: m.container_deployments.length > 0 ? m.container_deployments.map(item => item.name) : []
-          }));
-
-          console.log(mList);
-
-          setMachines(mList)
-        } catch (error) {
-          console.error("Error fetching data:", error);
-        }
-      };
-
-      // Fetch data initially
-      fetchData();
-
-      // Set up an interval to fetch data every, for example, 5 seconds
-      const intervalId = setInterval(fetchData, 5000);
-
-      // Cleanup function to clear the interval when the component is unmounted
-      return () => clearInterval(intervalId);
-    }
-  }, [startClusterMonitoringClicked]);
-
+  const [links, setLinks] = useState([{
+    "name": "link-01",
+    "type": "Fiber Optic",
+    "bandwidth": "10 Gbps",
+    "latency": "2 ms",
+    "jitter": "0.5 ms",
+    "packet_loss": "0.05%",
+    "reliability": "99.99%",
+    "duplex_mode": "Full",
+    "physical_medium": "Fiber Optic",
+    "distance": "50 meters",
+    "protocol": "UDP/IP",
+  },])
 
   const handleStartClick = () => {
     // Set startClicked to true when the Start button is clicked
     setStartClusterMonitoringClicked(!startClusterMonitoringClicked);
+
+    // Save the startClicked state to local storage
+    localStorage.setItem('startClusterMonitoringClicked', JSON.stringify(!startClusterMonitoringClicked));
   };
 
   useEffect(() => {
-    // Save the startClicked state to local storage
-    localStorage.setItem('startClusterMonitoringClicked', JSON.stringify(startClusterMonitoringClicked));
+    const fetchMachinesData = async () => {
+      try {
+        const { machineList } = await getMachineList();
+
+        // Machines table
+        const mList = machineList.map((m, index) => ({
+          machineName: m.name,
+          cpuUsage: { cpu: m.runtime_stack.cpu, cpuAllocated: m.runtime_stack.cpu_allocated },
+          memoryUsage: { memory: m.runtime_stack.memory, memoryAllocated: m.runtime_stack.memory_allocated },
+          diskUsage: { disk: m.runtime_stack.storage, diskAllocated: m.runtime_stack.storage_allocated },
+          containerDeployments: m.container_deployments.length > 0 ? m.container_deployments.map(item => item.name) : []
+        }));
+
+        setMachines(mList)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchLinksData = async () => {
+      try {
+        const { linkList } = await getLinkList();
+
+        // Machines table
+        const lList = linkList.map((l, index) => ({
+          name: l.name,
+          type: l.type,
+          bandwidth: l.bandwidth,
+          latency: l.latency,
+          jitter: l.jitter,
+          packet_loss: l.packet_loss,
+          reliability: l.reliability,
+          duplex_mode: l.duplex_mode,
+          physical_medium: l.physical_medium,
+          distance: l.distance,
+          protocol: l.protocol,
+        }));
+
+        setLinks(lList)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
     const fetchData = async () => {
       try {
+
         const { linkMachinesList } = await getLinkMachinesList();
 
 
@@ -131,6 +156,8 @@ function Cluster() {
 
     // Fetch data initially
     fetchData();
+    fetchMachinesData();
+    fetchLinksData()
   }, [startClusterMonitoringClicked]);
 
   useEffect(() => {
@@ -156,8 +183,17 @@ function Cluster() {
           <UndirectedGraph nodes={nodes} edges={edges} />
         </Card>
 
-        <div className=""><MachinesTable data={machines} /></div>
+        <div>
+          <div className="text-lg font-semibold text-gray-700 leading-10 px-1">Machines</div>
+          <MachinesTable data={machines} />
+        </div>
       </div>
+
+
+      <div className="py-3">
+          <div className="text-lg font-semibold text-gray-700 leading-10 px-1">Links</div>
+          <LinksTable data={links} />
+        </div>
     </DefaultLayout>
   )
 }

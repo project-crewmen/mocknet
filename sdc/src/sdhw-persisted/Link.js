@@ -2,6 +2,27 @@ const LinkModel = require("../models/linkModel")
 const ContainerModel = require("../models/containerModel")
 const NetworkModel = require("../models/networkModel")
 
+exports.clearLinks = async () => {
+    try {
+        // Check if the network instance already exists
+        const existingLinks = await LinkModel.findOne({});
+
+        if (existingLinks) {
+            try {
+                // If it exists, delete it
+                await LinkModel.deleteMany({});
+                console.log(`✅ Existing links deleted`);
+            } catch (error) {
+                console.error(`❌ Error deleting existing links: ${error.message}`);
+                throw error;
+            }
+        }
+    } catch (error) {
+        console.error(`❌ Error creating links instance: ${error.message}`);
+        throw error;
+    }
+}
+
 exports.initializeLink = async (link) => {
     try {
         // Check if the link with the same name already exists

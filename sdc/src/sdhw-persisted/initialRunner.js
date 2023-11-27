@@ -16,6 +16,7 @@ const run = async () => {
     /* 1. Spin the machines */
     console.log("\n--- Spin up Machines ---");
 
+    await Machine.clearMachines()
     for (const net of network_data.network) {
         // Extract source and destination machines
         let sourceMachine = net.machines.source.name;
@@ -47,6 +48,7 @@ const run = async () => {
     /* 2. Establish links */
     console.log("\n--- Establish Links ---");
 
+    await Link.clearLinks()
     for (const net of network_data.network) {
         // Extract the used link
         let usedLink = net.link.name;

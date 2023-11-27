@@ -28,8 +28,20 @@ export const getMachineList = async () => {
     return data;
 }
 
+export const getLinkList = async () => {
+    const { data } = await axios.get('http://localhost:2222/sdc/link');
+
+    return data;
+}
+
 export const getLinkMachinesList = async () => {
     const { data } = await axios.get('http://localhost:2222/sdc/network');
+
+    return data;
+}
+
+export const getAffinityCostListDetailed = async () => {
+    const { data } = await axios.get('http://localhost:1111/monitor/affinityCostDetailed/1');
 
     return data;
 }
