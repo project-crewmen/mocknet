@@ -219,7 +219,7 @@ const clear = async () => {
             }
         }
     } catch (error) {
-        console.error(`❌ Error clearing previous communications: ${error.message}`);
+        console.error(`❌ Error clearing previous affinities: ${error.message}`);
         throw error;
     }
 }
