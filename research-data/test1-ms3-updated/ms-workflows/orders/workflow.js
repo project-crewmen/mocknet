@@ -2,27 +2,27 @@ const apis = require("../config/apis")
 
 const workflow = {
     configurations: {
-        serviceName: "items"
+        serviceName: "orders"
     },
     serviceList: [
         {
-            apiInfo: apis.users,
+            apiInfo: apis.items,
             requests: {
                 type: "random",
                 min: 1,
                 max: 10,
                 requestDelay: {
                     type: "random",
-                    min: 800,
-                    max: 1100
+                    min: 850,
+                    max: 1000
                 }
             }
         }
     ],
     serviceDelay: {
         type: "random",
-        min: 700,
-        max: 1500
+        min: 900,
+        max: 1200
     }
 }
 

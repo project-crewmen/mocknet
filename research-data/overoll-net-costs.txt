@@ -1,13 +1,13 @@
 test1-ms3
 ---------
 NetCosts
-- RR:       0.15373546785752776
-- Greedy:   0.006446064365772174
+- RR:       0.004999999999999999
+- Greedy:   0.003894914124572626
 
 Greedy Deployments
-- users - machine-02
-- orders - machine-03
-- items - machine-03
+- users - machine-01
+- orders - machine-02
+- items - machine-02
 
 
 test2-ms4
