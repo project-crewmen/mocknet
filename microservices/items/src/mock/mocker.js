@@ -133,12 +133,30 @@ const followWorkflow = async () => {
 }
 
 const reproduce = async () => {
+    let totalMessagePassed = 0
+    let totalDataEchanged = 0
+
     const com_pattern = await Communication.find({})
 
     for (const com of com_pattern) {
         for (const serviceRequest of com.serviceRequests) {
             const service = apis.apis.find(s => s.service === serviceRequest.dest)
             const API = service.apiList.find(a => a.env === process.env.ENV).api
+
+            var affnity = null
+            const prevAffinity = await Affinity.findOne({ src: process.env.SDC_CONTAINER_NAME, dest: service.service })
+
+            if (prevAffinity !== null) {
+                affnity = prevAffinity
+            }
+            else {
+                affnity = await Affinity.create({
+                    src: process.env.SDC_CONTAINER_NAME,
+                    dest: service.service,
+                    messagesPassed: 0,
+                    dataExchanged: 0,
+                })
+            }
 
             try {
                 // Call the API
@@ -148,6 +166,20 @@ const reproduce = async () => {
                 const payloadSize = JSON.stringify(serviceResponse.data).length;
 
                 console.log(`Response received with payload size ${payloadSize} bytes`);
+
+                totalMessagePassed = totalMessagePassed + 1
+                totalDataEchanged = totalDataEchanged + payloadSize
+
+                console.log(`totalMessagePassed: ${totalMessagePassed}, totalDataEchanged: ${totalDataEchanged}`);
+
+                // Update Database Record
+                const updatedAffinity = await Affinity.findOneAndUpdate({
+                    src: process.env.SDC_CONTAINER_NAME,
+                    dest: service.service,
+                }, {
+                    messagesPassed: totalMessagePassed,
+                    dataExchanged: totalDataEchanged
+                })
 
                 // Delay
                 const localDelay = serviceRequest.requestDelay;

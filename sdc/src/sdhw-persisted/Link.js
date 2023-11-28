@@ -78,7 +78,11 @@ exports.getContainerLink = async (srcContainer, destContainer) => {
         const srcCont = await ContainerModel.findOne({ name: srcContainer })
         const destCont = await ContainerModel.findOne({ name: destContainer })
 
-        const link = await NetworkModel.findOne({ machines: { source: srcCont.deployed_machine, destination: destCont.deployed_machine } }).populate("link", "")
+        let link = await NetworkModel.findOne({ machines: { source: srcCont.deployed_machine, destination: destCont.deployed_machine } }).populate("link", "")
+
+        if (!link){
+            link = await NetworkModel.findOne({ machines: { source: destCont.deployed_machine, destination: srcCont.deployed_machine } }).populate("link", "")
+        }
 
         if (link) {
             return {
