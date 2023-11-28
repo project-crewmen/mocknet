@@ -1,0 +1,43 @@
+{
+    "affinityCostList": [
+        {
+            "src": "users",
+            "dest": "orders",
+            "AC_x_y": 0.00207109337471825
+        },
+        {
+            "src": "orders",
+            "dest": "items",
+            "AC_x_y": 0.0007196171895207479
+        },
+        {
+            "src": "items",
+            "dest": "inventory",
+            "AC_x_y": 0.0007020655507519491
+        },
+        {
+            "src": "inventory",
+            "dest": "email",
+            "AC_x_y": 0.0010882016036655212
+        },
+        {
+            "src": "email",
+            "dest": "users",
+            "AC_x_y": 0.00041902228134353177
+        }
+    ],
+    "netCost": 0.004999999999999999,
+    "avgCost": 0.0009999999999999998,
+    "hacs": [
+        {
+            "src": "users",
+            "dest": "orders",
+            "AC_x_y": 0.00207109337471825
+        },
+        {
+            "src": "inventory",
+            "dest": "email",
+            "AC_x_y": 0.0010882016036655212
+        }
+    ]
+}
