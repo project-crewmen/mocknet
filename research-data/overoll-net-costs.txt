@@ -23,8 +23,7 @@ Greedy Deployments
 - inventory - machine-03
 
 
-
-test2-ms5
+test3-ms5
 ---------
 NetCosts
 - RR:       0.004999999999999999
@@ -36,3 +35,18 @@ Greedy Deployments
 - items - machine-03
 - inventory - machine-04
 - email - machine-04
+
+
+test4-ms6
+---------
+NetCosts
+- RR:       0.004999999999999999
+- Greedy:   0.004499087421313368
+
+Greedy Deployments
+- users - machine-01
+- orders - machine-02
+- items - machine-03
+- inventory - machine-04
+- email - machine-05
+- payment - machine-05

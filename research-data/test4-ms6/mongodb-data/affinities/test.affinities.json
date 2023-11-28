@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "65663a2b70a99b28a9e22482"
+  },
+  "src": "users",
+  "dest": "orders",
+  "messagesPassed": 272,
+  "dataExchanged": 23120,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65663a2de069f317dca514c0"
+  },
+  "src": "orders",
+  "dest": "items",
+  "messagesPassed": 103,
+  "dataExchanged": 8755,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65663a2ff483f31507e280f2"
+  },
+  "src": "items",
+  "dest": "inventory",
+  "messagesPassed": 95,
+  "dataExchanged": 8075,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65663a320372061e91d8c3ae"
+  },
+  "src": "inventory",
+  "dest": "email",
+  "messagesPassed": 128,
+  "dataExchanged": 10880,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65663a34768d2a823c2ea0f8"
+  },
+  "src": "email",
+  "dest": "payment",
+  "messagesPassed": 82,
+  "dataExchanged": 6970,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65663a373139f3eb316025ed"
+  },
+  "src": "payment",
+  "dest": "users",
+  "messagesPassed": 175,
+  "dataExchanged": 8925,
+  "__v": 0
+}]
