@@ -22,7 +22,7 @@ function DefaultLayout({ children }) {
             <Header>
                 <div className='inline-flex gap-3 w-full items-center'>
                     <div className='inline-flex gap-1 text-lg'>
-                        <div className='font-bold text-gray-400'>Crewmen</div>
+                        <div className='font-bold text-gray-400'>MockNet</div>
                         <div className='font-light text-gray-500'>Dashboard</div>
                     </div>
 

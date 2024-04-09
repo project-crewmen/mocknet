@@ -1,16 +1,16 @@
 version: '3'
 
 services:
-  # User Interface
+  # # User Interface
   # mocknet-dashboard:
-  #   image: mocknet/crewmen-dashboard
+  #   image: mocknet/mocknet-dashboard
   #   container_name: dashboard
   #   build:
-  #     context: ./crewmen-dashboard
+  #     context: ./mocknet-dashboard
   #   ports:
   #     - 8080:8080
 
-  # Monitoring Tool
+  # # Monitoring Tool
   # monitor:
   #   image: mocknet/monitor
   #   container_name: monitor
@@ -19,90 +19,90 @@ services:
   #   ports:
   #     - 1111:1111
 
-  # Microservices
-  users:
-    image: mocknet/users
-    container_name: users
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/users
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_USERS}
-    ports:
-      - ${MS_PORT_USERS}:${MS_PORT_USERS}
+  # # Microservices
+  # users:
+  #   image: mocknet/users
+  #   container_name: users
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/users
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_USERS}
+  #   ports:
+  #     - ${MS_PORT_USERS}:${MS_PORT_USERS}
 
-  orders:
-    image: mocknet/orders
-    container_name: orders
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/orders
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_ORDERS}
-    ports:
-      - ${MS_PORT_ORDERS}:${MS_PORT_ORDERS}
+  # orders:
+  #   image: mocknet/orders
+  #   container_name: orders
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/orders
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_ORDERS}
+  #   ports:
+  #     - ${MS_PORT_ORDERS}:${MS_PORT_ORDERS}
 
-  items:
-    image: mocknet/items
-    container_name: items
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/items
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_ITEMS}
-    ports:
-      - ${MS_PORT_ITEMS}:${MS_PORT_ITEMS}
+  # items:
+  #   image: mocknet/items
+  #   container_name: items
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/items
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_ITEMS}
+  #   ports:
+  #     - ${MS_PORT_ITEMS}:${MS_PORT_ITEMS}
 
-  inventory:
-    image: mocknet/inventory
-    container_name: inventory
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/inventory
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_INVENTORY}
-    ports:
-      - ${MS_PORT_INVENTORY}:${MS_PORT_INVENTORY}
+  # inventory:
+  #   image: mocknet/inventory
+  #   container_name: inventory
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/inventory
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_INVENTORY}
+  #   ports:
+  #     - ${MS_PORT_INVENTORY}:${MS_PORT_INVENTORY}
 
-  email:
-    image: mocknet/email
-    container_name: email
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/email
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_EMAIL}
-    ports:
-      - ${MS_PORT_EMAIL}:${MS_PORT_EMAIL}
+  # email:
+  #   image: mocknet/email
+  #   container_name: email
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/email
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_EMAIL}
+  #   ports:
+  #     - ${MS_PORT_EMAIL}:${MS_PORT_EMAIL}
 
-  payment:
-    image: mocknet/payment
-    container_name: payment
-    depends_on:
-      - mongo
-    build:
-      context: ./microservices/payment
-    environment:
-      REQUEST_MODE: ${REQUEST_MODE}
-      ENV: ${ENV}
-      PORT: ${MS_PORT_PAYMENT}
-    ports:
-      - ${MS_PORT_PAYMENT}:${MS_PORT_PAYMENT}
+  # payment:
+  #   image: mocknet/payment
+  #   container_name: payment
+  #   depends_on:
+  #     - mongo
+  #   build:
+  #     context: ./microservices/payment
+  #   environment:
+  #     REQUEST_MODE: ${REQUEST_MODE}
+  #     ENV: ${ENV}
+  #     PORT: ${MS_PORT_PAYMENT}
+  #   ports:
+  #     - ${MS_PORT_PAYMENT}:${MS_PORT_PAYMENT}
 
   # Database
   mongo:
@@ -118,20 +118,20 @@ services:
     ports:
       - '27017:27017'
 
-  # mongo-express:
-  #   image: mongo-express
-  #   container_name: mexpress
-  #   environment:
-  #     - ME_CONFIG_MONGODB_ADMINUSERNAME=root
-  #     - ME_CONFIG_MONGODB_ADMINPASSWORD=password
-  #     - ME_CONFIG_MONGODB_URL=mongodb://root:password@mongo:27017/?authSource=admin
-  #     - ME_CONFIG_BASICAUTH_USERNAME=mexpress
-  #     - ME_CONFIG_BASICAUTH_PASSWORD=mexpress
-  #   links:
-  #     - mongo
-  #   restart: unless-stopped
-  #   ports:
-  #     - "8081:8081"
+  mongo-express:
+    image: mongo-express
+    container_name: mexpress
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+      - ME_CONFIG_MONGODB_URL=mongodb://root:password@mongo:27017/?authSource=admin
+      - ME_CONFIG_BASICAUTH_USERNAME=mexpress
+      - ME_CONFIG_BASICAUTH_PASSWORD=mexpress
+    links:
+      - mongo
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
 
 volumes:
   mongodb:
